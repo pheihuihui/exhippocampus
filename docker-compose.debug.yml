@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  mongodb:
+    image: mongo:5.0.5
+    ports:
+      - 27017:27017
+    volumes:
+      - /f/hippo:/data/db
+  externalhippocampus:
+    image: externalhippocampus
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+      - 9229:9229
