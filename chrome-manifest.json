@@ -1,0 +1,29 @@
+{
+    "name": "exhippocampus-crx",
+    "action": {},
+    "manifest_version": 3,
+    "version": "0.1",
+    "description": "...",
+    "permissions": [
+        "pageCapture",
+        "contextMenus"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://google.com/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    }
+}
