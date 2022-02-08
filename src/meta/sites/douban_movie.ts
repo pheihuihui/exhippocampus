@@ -1,4 +1,4 @@
-export type TDoubanMovie = {
+export type T_DoubanMovie = {
     name: string
     rating: number
     img: string

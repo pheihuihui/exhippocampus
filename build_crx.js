@@ -23,6 +23,6 @@ es.build({
     entryPoints: ['./src/chrome/background.ts'],
     outfile: './crx/background.js',
     minify: false,
-    bundle: false,
+    bundle: true,
     tsconfig: './tsconfig.json'
 })

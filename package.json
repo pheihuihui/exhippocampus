@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:app": "node build.js",
+    "build:server": "node build_server.js",
+    "build:client": "node build_client.js",
     "build:crx": "node build_crx.js",
     "build:demo": "node build_demo.js"
   },
   "dependencies": {
-    "@types/node": "16.11.12",
-    "mongodb": "4.2.1"
+    "@types/node": "17.0.15",
+    "mongodb": "4.3.1"
   },
   "devDependencies": {
     "esbuild": "0.14.18",

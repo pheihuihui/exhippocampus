@@ -1,34 +1,31 @@
-import { TBili } from "./_bilibili"
-import { TDoubanBook } from "./_douban_book"
-import { TDoubanMovie } from "./_douban_movie"
-import { TTwitter } from "./_twitter"
-import { TWiki } from "./_wikipedia"
-import { TZhihu } from "./_zhihu"
+import { T_Bili } from "./sites/bilibili"
+import { T_DoubanBook } from "./sites/douban_book"
+import { T_DoubanMovie } from "./sites/douban_movie"
+import { T_Twitter } from "./sites/twitter"
+import { T_Wiki } from "./sites/wikipedia"
+import { T_Zhihu } from "./sites/zhihu"
 
-
-// const SOURCES = [
-//     'douban_movie',
-//     'douban_book',
-//     'twitter',
-//     'wikipedia',
-//     'bilibili',
-//     'github',
-//     'zhihu',
-//     'youtube',
-//     'just_text',
-//     'just_image',
-//     'podcast',
-//     'gcores_article'
-// ] as const
-
+const SOURCES = [
+    'douban_movie',
+    'douban_book',
+    'twitter',
+    'wikipedia',
+    'bilibili',
+    'github',
+    'zhihu',
+    'youtube',
+    'just_text',
+    'just_image',
+    'podcast'
+] as const
 
 interface ISources {
-    douban_movie: TDoubanMovie
-    douban_book: TDoubanBook
-    wikipedia: TWiki
-    zhihu: TZhihu
-    twitter: TTwitter
-    bilibili: TBili
+    douban_movie: T_DoubanMovie
+    douban_book: T_DoubanBook
+    wikipedia: T_Wiki
+    zhihu: T_Zhihu
+    twitter: T_Twitter
+    bilibili: T_Bili
 }
 
 type TSource = keyof ISources
