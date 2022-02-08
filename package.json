@@ -6,12 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:server": "node build_server.js",
+    "start:server": "ts-node ./src/server/index.ts",
     "build:client": "node build_client.js",
     "build:crx": "node build_crx.js",
     "build:demo": "node build_demo.js"
   },
   "dependencies": {
     "@types/node": "17.0.15",
+    "express": "4.17.2",
+    "@types/express": "4.17.13",
     "mongodb": "4.3.1"
   },
   "devDependencies": {

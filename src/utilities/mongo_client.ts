@@ -13,7 +13,7 @@ class ExhippocampusDataManager {
     private static client: MongoClient
     static async getMongoClient() {
         if (ExhippocampusDataManager.client && ExhippocampusDataManager.client) return this.client
-        let cli = await MongoClient.connect(CONNSTR_BROWSER)
+        let cli = await MongoClient.connect(CONNSTR_NODE)
         this.client = cli
         return this.client
     }
@@ -32,4 +32,9 @@ export async function insertNewItem(item: any) {
         .then(res => {
             console.log(res.insertedId)
         })
+}
+
+export async function disconnectMongo() {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    await client.close()
 }
