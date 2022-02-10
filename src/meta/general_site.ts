@@ -1,3 +1,3 @@
-export type T_GeneralSite = {
-    content: Blob
+export type T_GeneralPage = {
+    pageContent: Blob
 }
