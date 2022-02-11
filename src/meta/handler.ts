@@ -1,7 +1,6 @@
-import { RequestHandler } from "express";
-import { T_Item, T_Source } from "./item";
+import { RequestHandler } from 'express'
 
-export type T_HandlerInfo<S extends T_Source> = {
+export type T_HandlerInfo = {
     name: string,
     type: 'POST' | 'GET',
     // handler: RequestHandler<{}, string, T_Item<S>, Record<string, string>, Record<string, string>>

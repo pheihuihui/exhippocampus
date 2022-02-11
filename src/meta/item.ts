@@ -20,7 +20,7 @@ const SOURCES = [
     'podcast'
 ] as const
 
-interface I_Sources {
+export interface I_Sources {
     douban_movie: T_DoubanMovie
     douban_book: T_DoubanBook
     wikipedia: T_Wiki
@@ -54,8 +54,8 @@ export type T_Item<T extends T_Source> = {
     tags: string[]
 }
 
-export type F_Item_Serialization<T extends T_Source> = (itemType: T, item: T_Item<T>) => string
-export type F_Item_Deserialization<T extends T_Source> = (str: string, itemType: T) => T_Item<T>
+export type F_Item_Details_Serialization<T extends T_Source> = (item: T_Item<T>['details']) => Promise<string>
+export type F_Item_Details_Deserialization<T extends T_Source> = (str: string) => Promise<T_Item<T>['details']>
 
 export type T_Person = {
     ID: string

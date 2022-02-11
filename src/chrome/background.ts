@@ -1,5 +1,5 @@
 import { REQ_NAMES_INSERT, T_Item, T_Source } from "../meta/item"
-import { _readAsDataURL } from "../utilities/blob"
+import { serializeItem } from "../utilities/data_transfer"
 
 const contextMenuId = 'id_capture_content'
 const serverUrl = 'http://127.0.0.1:30000'
@@ -40,14 +40,7 @@ chrome.contextMenus.onClicked.addListener(listener)
 
 async function insertData<T extends T_Source>(itemType: T, item: T_Item<T>) {
     let url = `${serverUrl}${REQ_NAMES_INSERT[itemType]}`
-    let str = JSON.stringify(item, async (key, val) => {
-        if (key == 'pageContent') {
-            let vall = await _readAsDataURL(val)
-            return vall
-        } else {
-            return val
-        }
-    })
+    let str = await serializeItem(itemType, item)
     console.log(str)
     let resp = await fetch(url, { method: 'POST', body: str })
     console.log(resp)
