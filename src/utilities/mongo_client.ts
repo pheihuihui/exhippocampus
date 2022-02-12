@@ -39,6 +39,7 @@ async function getCollection<T extends T_Source>(itemType: T) {
 }
 
 export async function insertNewItem<T extends T_Source>(itemType: T, item: string) {
+    console.log(item.length)
     let coll = await getCollection(itemType)
     let res = await coll.insertOne({ item: item })
         .then(res => res.insertedId.toString())

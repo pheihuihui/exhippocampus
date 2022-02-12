@@ -17,7 +17,9 @@
     "@types/express": "4.17.13",
     "mongodb": "4.3.1",
     "cors": "2.8.5",
-    "@types/cors": "^2.8.12"
+    "@types/cors": "^2.8.12",
+    "body-parser": "1.19.1",
+    "@types/body-parser": "1.19.2"
   },
   "devDependencies": {
     "esbuild": "0.14.18",

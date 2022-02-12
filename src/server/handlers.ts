@@ -7,7 +7,6 @@ const insertGeneralPage: T_HandlerInfo = {
     type: 'POST',
     handler: async (req, res) => {
         let item = req.body
-        console.log(item)
         let ret = await insertNewItem('general', item)
         if (ret) {
             res.json(ret)

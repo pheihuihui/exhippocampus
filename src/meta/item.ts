@@ -54,6 +54,8 @@ export type T_Item<T extends T_Source> = {
     tags: string[]
 }
 
+export type T_Item_Form = Omit<T_Item<any>, 'details' | 'timestamp' | 'link'>
+
 export type F_Item_Details_Serialization<T extends T_Source> = (item: T_Item<T>['details']) => Promise<string>
 export type F_Item_Details_Deserialization<T extends T_Source> = (str: string) => Promise<T_Item<T>['details']>
 
