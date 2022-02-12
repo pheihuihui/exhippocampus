@@ -6,7 +6,8 @@
     "description": "...",
     "permissions": [
         "pageCapture",
-        "contextMenus"
+        "contextMenus",
+        "tabs"
     ],
     "background": {
         "service_worker": "background.js"
@@ -14,11 +15,12 @@
     "content_scripts": [
         {
             "matches": [
-                "https://google.com/*"
+                "<all_urls>"
             ],
             "js": [
                 "content.js"
-            ]
+            ],
+            "run_at": "document_idle"
         }
     ],
     "icons": {

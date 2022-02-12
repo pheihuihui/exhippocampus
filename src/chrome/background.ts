@@ -17,17 +17,9 @@ const listener: T_Callback = function (info, tab) {
     if (info.menuItemId == contextMenuId) {
         let tbid = tab?.id
         if (tbid) {
+            sendMessageToContent(tbid)
             chrome.pageCapture.saveAsMHTML({ tabId: tbid }, data => {
-                if (data?.size) {
-                    let dt = buildData({
-                        title: 'title1',
-                        language: ['cn', 'en'],
-                        tags: ['tag1']
-                    }, {
-                        pageContent: data
-                    }, 'link1')
-                    insertData('general', dt)
-                }
+                if (data?.size) { }
             })
         }
     }
@@ -53,4 +45,8 @@ function buildData<T extends T_Source>(form: T_Item_Form, details: I_Sources[T],
         details: details,
         tags: []
     }
+}
+
+function sendMessageToContent(tab: number) {
+    chrome.tabs.sendMessage(tab, 'hello')
 }

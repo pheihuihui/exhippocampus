@@ -6,7 +6,7 @@ if (fs.existsSync('./crx')) {
 }
 
 fs.mkdirSync('./crx')
-fs.copyFileSync('./chrome-manifest.json', './crx/manifest.json')
+fs.copyFileSync('./asserts/chrome-manifest.json', './crx/manifest.json')
 fs.copyFileSync('./asserts/icon16.png', './crx/icon16.png')
 fs.copyFileSync('./asserts/icon48.png', './crx/icon48.png')
 fs.copyFileSync('./asserts/icon128.png', './crx/icon128.png')
