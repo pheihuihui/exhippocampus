@@ -19,7 +19,14 @@ const listener: T_Callback = function (info, tab) {
         if (tbid) {
             chrome.pageCapture.saveAsMHTML({ tabId: tbid }, data => {
                 if (data?.size) {
-
+                    let dt = buildData({
+                        title: 'title1',
+                        language: ['cn', 'en'],
+                        tags: ['tag1']
+                    }, {
+                        pageContent: data
+                    }, 'link1')
+                    insertData('general', dt)
                 }
             })
         }

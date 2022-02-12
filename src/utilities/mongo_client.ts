@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId, WriteConcern, WriteConcernError, WriteError } from 'mongodb'
-import { T_Item, T_Source } from '../meta/item'
+import { T_Item, T_Item_Mongo, T_Source } from '../meta/item'
 
 const APPDBNAME = 'ExhippocampusDB'
 const APPCOLLNAME_PAGES = 'ExhippocampusColl_Pages'
@@ -38,10 +38,9 @@ async function getCollection<T extends T_Source>(itemType: T) {
     return coll
 }
 
-export async function insertNewItem<T extends T_Source>(itemType: T, item: string) {
-    console.log(item.length)
+export async function insertNewItem<T extends T_Source>(itemType: T, item: T_Item_Mongo) {
     let coll = await getCollection(itemType)
-    let res = await coll.insertOne({ item: item })
+    let res = await coll.insertOne(item)
         .then(res => res.insertedId.toString())
         .catch(err => {
             console.log(err)

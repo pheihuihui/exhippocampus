@@ -5,6 +5,7 @@ import { T_DoubanMovie } from "./sites/douban_movie"
 import { T_Twitter } from "./sites/twitter"
 import { T_Wiki } from "./sites/wikipedia"
 import { T_Zhihu } from "./sites/zhihu"
+import { Replace } from "./utilities"
 
 const SOURCES = [
     'douban_movie',
@@ -47,7 +48,7 @@ export const REQ_NAMES_INSERT: T_ReqName = {
 export type T_Item<T extends T_Source> = {
     title: string
     timestamp: number
-    language: 'none' | Set<'en' | 'cn' | 'jp' | 'other'>
+    language: 'none' | Array<'en' | 'cn' | 'jp' | 'other'>
     link?: string
     relatedPersons?: string[]
     details: I_Sources[T]
@@ -55,6 +56,7 @@ export type T_Item<T extends T_Source> = {
 }
 
 export type T_Item_Form = Omit<T_Item<any>, 'details' | 'timestamp' | 'link'>
+export type T_Item_Mongo = Replace<T_Item<any>, 'details', string>
 
 export type F_Item_Details_Serialization<T extends T_Source> = (item: T_Item<T>['details']) => Promise<string>
 export type F_Item_Details_Deserialization<T extends T_Source> = (str: string) => Promise<T_Item<T>['details']>
