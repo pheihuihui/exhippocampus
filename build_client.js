@@ -18,5 +18,6 @@ es.build({
     minify: true,
     bundle: true,
     tsconfig: './tsconfig.json',
-    platform: 'browser'
+    platform: 'browser',
+    treeShaking: true
 })

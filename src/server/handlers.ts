@@ -1,8 +1,8 @@
 import { T_HandlerInfo } from '../meta/handler'
 import { REQ_NAMES_INSERT, T_Item_Mongo } from '../meta/item'
-import { insertNewItem } from '../utilities/mongo_client'
+import { getAllTags, insertNewItem } from '../utilities/mongo_client'
 
-const insertGeneralPage: T_HandlerInfo = {
+const h_InsertGeneralPage: T_HandlerInfo = {
     name: REQ_NAMES_INSERT['general'],
     type: 'POST',
     handler: async (req, res) => {
@@ -16,4 +16,13 @@ const insertGeneralPage: T_HandlerInfo = {
     }
 }
 
-export const handlerInfos: T_HandlerInfo[] = [insertGeneralPage]
+const h_QueryTags: T_HandlerInfo = {
+    name: '/query/tags',
+    type: 'GET',
+    handler: async (req, res) => {
+        let arr = await getAllTags()
+        res.json(JSON.stringify(arr))
+    }
+}
+
+export const handlerInfos: T_HandlerInfo[] = [h_InsertGeneralPage, h_QueryTags]

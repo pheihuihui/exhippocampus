@@ -1,5 +1,8 @@
-function testinsert() {
-    fetch('/test', { method: 'POST' }).then(res => console.log(res.body))
-}
+import ReactDOM from "react-dom";
+import { test } from "../components/TagsField";
 
-window.testinsert = testinsert
+fetch('/query/tags', { method: 'GET' })
+    .then(x => x.json())
+    .then(x => { localStorage.setItem('exhippo_tags', x) })
+
+ReactDOM.render(test, document.body)

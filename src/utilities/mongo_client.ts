@@ -48,6 +48,26 @@ export async function insertNewItem<T extends T_Source>(itemType: T, item: T_Ite
     return res
 }
 
+export async function insertNewTag(tag: string) {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    let db = client.db(APPDBNAME)
+    let coll = db.collection(APPCOLLNAME_TAGS)
+    let res = await coll.insertOne({ tag: tag })
+        .then(res => res.insertedId.toString())
+        .catch(err => {
+            console.log(err)
+        })
+    return res
+}
+
+export async function getAllTags() {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    let db = client.db(APPDBNAME)
+    let coll = db.collection(APPCOLLNAME_TAGS)
+    let res = await coll.find().toArray()
+    return res.map(x => x.tag as string)
+}
+
 export async function searchItem(keywords: string) {
 
 }
