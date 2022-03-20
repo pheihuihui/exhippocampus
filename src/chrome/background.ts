@@ -1,10 +1,11 @@
 import { I_Sources, REQ_NAMES_INSERT, T_Item, T_Item_Form, T_Source } from "../meta/item"
+import { CONF_CLIENT } from "../utilities/configurations"
 import { serializeItem } from "../utilities/data_transfer"
 
 const contextMenuId = 'id_capture_content'
-const serverUrl = 'http://127.0.0.1:30000'
+const serverUrl = CONF_CLIENT.SERVER
 
-type T_Callback = (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab | undefined) => void
+type T_Callback = Parameters<typeof chrome.contextMenus.onClicked.addListener>[0]
 
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({

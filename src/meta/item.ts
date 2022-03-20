@@ -55,7 +55,7 @@ export type T_Item<T extends T_Source> = {
     tags: string[]
 }
 
-export type T_Item_Form = Omit<T_Item<any>, 'details' | 'timestamp' | 'link'>
+export type T_Item_Form = Omit<T_Item<any>, 'details' | 'timestamp'>
 export type T_Item_Mongo = Replace<T_Item<any>, 'details', string>
 
 export type F_Item_Details_Serialization<T extends T_Source> = (item: T_Item<T>['details']) => Promise<string>

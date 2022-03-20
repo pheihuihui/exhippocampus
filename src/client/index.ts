@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom";
-import { test } from "../components/TagsField";
+import { _tags } from "../components/CustomizedHook";
 
-fetch('/query/tags', { method: 'GET' })
-    .then(x => x.json())
-    .then(x => { localStorage.setItem('exhippo_tags', x) })
+// fetch('/query/tags', { method: 'GET' })
+//     .then(x => x.json())
+//     .then(x => { localStorage.setItem('exhippo_tags', x) })
 
-ReactDOM.render(test, document.body)
+ReactDOM.render(_tags, document.body)

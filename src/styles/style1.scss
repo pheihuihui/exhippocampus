@@ -1,0 +1,44 @@
+.style1 {
+    width: 300px;
+    margin: 2px 0 0;
+    padding: 0;
+    position: absolute;
+    list-style: none;
+    background-color: #141414;
+    overflow: auto;
+    max-height: 250px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+
+    & li {
+        padding: 5px 12px;
+        display: flex;
+
+        & span {
+            flex-grow: 1;
+        }
+
+        & svg {
+            color: transparent;
+        }
+    }
+
+    & li[aria-selected='true'] {
+        background-color: #2b2b2b;
+        font-weight: 600;
+
+        & svg {
+            color: #1890ff;
+        }
+    }
+
+    & li[data-focus='true'] {
+        background-color: #003b57;
+        cursor: pointer;
+
+        & svg {
+            color: currentColor;
+        }
+    }
+}

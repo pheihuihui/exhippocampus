@@ -1,14 +1,12 @@
-import { MongoClient, ObjectId, WriteConcern, WriteConcernError, WriteError } from 'mongodb'
-import { T_Item, T_Item_Mongo, T_Source } from '../meta/item'
+import { MongoClient } from 'mongodb'
+import { T_Item_Mongo, T_Source } from '../meta/item'
+import { CONF_SERVER } from './configurations'
 
 const APPDBNAME = 'ExhippocampusDB'
 const APPCOLLNAME_PAGES = 'ExhippocampusColl_Pages'
 const APPCOLLNAME_TAGS = 'ExhippocampusColl_Tags'
 const APPCOLLNAME_PERSONS = 'ExhippocampusColl_Persons'
 const APPCOLLNAME_TESTDATA = 'ExhippocampusColl_Testdata'
-
-const CONNSTR_NODE = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false'
-const CONNSTR_BROWSER = 'http://localhost:28017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false'
 
 const COLL_NAMES_ITEM: Record<T_Source, string> = {
     douban_movie: APPCOLLNAME_TESTDATA,
@@ -24,7 +22,7 @@ class ExhippocampusDataManager {
     private static client: MongoClient
     static async getMongoClient() {
         if (ExhippocampusDataManager.client && ExhippocampusDataManager.client) return this.client
-        let cli = await MongoClient.connect(CONNSTR_NODE)
+        let cli = await MongoClient.connect(CONF_SERVER.CONNSTR_NODE)
         this.client = cli
         return this.client
     }

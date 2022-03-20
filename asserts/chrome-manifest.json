@@ -20,10 +20,7 @@
             "js": [
                 "content.js"
             ],
-            "run_at": "document_idle",
-            "css": [
-                "dialog.css"
-            ]
+            "run_at": "document_idle"
         }
     ],
     "icons": {
