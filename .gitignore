@@ -106,3 +106,6 @@ crx
 
 # editor
 .vscode
+
+#
+src/scripts/douban_movie_ids.ts
