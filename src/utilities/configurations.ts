@@ -1,5 +1,6 @@
 export const CONF_SERVER = {
-    CONNSTR_NODE: 'mongodb://pheihuihui.local:27017/?readPreference=primary&directConnection=true&ssl=false'
+    // CONNSTR_NODE: 'mongodb://pheihuihui.local:27017/?readPreference=primary&directConnection=true&ssl=false'
+    CONNSTR_NODE: 'mongodb://localhost:27017/?readPreference=primary&directConnection=true&ssl=false'
 } as const
 
 export const CONF_CLIENT = {
