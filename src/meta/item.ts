@@ -46,6 +46,7 @@ export const REQ_NAMES_INSERT: T_ReqName = {
 } as const
 
 export type T_Item<T extends T_Source> = {
+    source: T
     title: string
     timestamp: number
     language: 'none' | Array<'en' | 'cn' | 'jp' | 'other'>
