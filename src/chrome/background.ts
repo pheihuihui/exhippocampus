@@ -10,7 +10,7 @@ type T_Callback = Parameters<typeof chrome.contextMenus.onClicked.addListener>[0
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: contextMenuId,
-        title: "Capture content"
+        title: "Capture this page"
     })
 })
 
@@ -18,9 +18,19 @@ const listener: T_Callback = function (info, tab) {
     if (info.menuItemId == contextMenuId) {
         let tbid = tab?.id
         if (tbid) {
-            sendMessageToContent(tbid)
             chrome.pageCapture.saveAsMHTML({ tabId: tbid }, data => {
-                if (data?.size) { }
+                if (data?.size) {
+                    insertData('general', {
+                        source: 'general',
+                        title: 'title',
+                        timestamp: Date.now(),
+                        language: ['cn'],
+                        details: {
+                            pageContent: data
+                        },
+                        tags: []
+                    })
+                }
             })
         }
     }
@@ -29,15 +39,15 @@ const listener: T_Callback = function (info, tab) {
 chrome.contextMenus.onClicked.addListener(listener)
 
 async function insertData<T extends T_Source>(itemType: T, item: T_Item<T>) {
-    let url = `${serverUrl}${REQ_NAMES_INSERT[itemType]}`
+    let url = `http://${serverUrl}${REQ_NAMES_INSERT[itemType]}`
     let str = await serializeItem(itemType, item)
-    console.log(str.length)
     let resp = await fetch(url, { method: 'POST', body: str })
     console.log(resp)
 }
 
-function buildData<T extends T_Source>(form: T_Item_Form, details: I_Sources[T], link?: string): T_Item<T> {
+function buildData<T extends T_Source>(source: T, form: T_Item_Form, details: I_Sources[T], link?: string): T_Item<T> {
     return {
+        source: source,
         title: form.title,
         timestamp: Date.now(),
         language: form.language,
@@ -49,5 +59,7 @@ function buildData<T extends T_Source>(form: T_Item_Form, details: I_Sources[T],
 }
 
 function sendMessageToContent(tab: number) {
-    chrome.tabs.sendMessage(tab, 'hello')
+    chrome.tabs.sendMessage(tab, 'hello', function (resp) {
+        console.log(resp)
+    })
 }

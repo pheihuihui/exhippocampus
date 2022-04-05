@@ -56,11 +56,13 @@ export type T_Item<T extends T_Source> = {
     tags: string[]
 }
 
+export type T_SerializedDetail<T extends T_Source> = Record<keyof T_Item<T>['details'], string>
+
 export type T_Item_Form = Omit<T_Item<any>, 'details' | 'timestamp'>
 export type T_Item_Mongo = Replace<T_Item<any>, 'details', string>
 
 export type F_Item_Details_Serialization<T extends T_Source> = (item: T_Item<T>['details']) => Promise<string>
-export type F_Item_Details_Deserialization<T extends T_Source> = (str: string) => Promise<T_Item<T>['details']>
+export type F_Item_Details_Deserialization<T extends T_Source> = (detail: T_SerializedDetail<T>) => Promise<T_Item<T>['details']>
 
 export type T_Person = {
     ID: string

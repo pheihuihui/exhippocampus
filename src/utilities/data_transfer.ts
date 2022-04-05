@@ -1,4 +1,4 @@
-import { F_Item_Details_Serialization, I_Sources, T_Item, T_Source } from '../meta/item'
+import { F_Item_Details_Deserialization, F_Item_Details_Serialization, I_Sources, T_Item, T_SerializedDetail, T_Source } from '../meta/item'
 
 function _readAsDataURL(blob: Blob) {
     return new Promise<string>((resolve, reject) => {
@@ -15,6 +15,9 @@ function _readAsDataURL(blob: Blob) {
         fr.readAsDataURL(blob)
     })
 }
+
+const b64toBlob = (base64: string, type = 'application/octet-stream') =>
+    fetch(`data:${type};base64,${base64}`).then(res => res.blob())
 
 export async function serializeItem<T extends T_Source>(itemType: T, item: T_Item<T>) {
 
@@ -81,4 +84,40 @@ export async function serializeItem<T extends T_Source>(itemType: T, item: T_Ite
     tmp.details = det
     return JSON.stringify(tmp)
 
+}
+
+export async function deserializeItem<T extends T_Source>(itemType: T, str: string) {
+    let sub: F_Item_Details_Deserialization<any>
+    let obj = JSON.parse(str) as T_Item<any>
+    let det = obj.details
+
+    switch (itemType) {
+        case 'general': {
+            let _sub: F_Item_Details_Deserialization<'general'>
+            _sub = async _det => {
+                let tmp = await b64toBlob(_det.pageContent)
+                return ({ pageContent: tmp })
+            }
+            sub = _sub
+            break
+        }
+        case 'bilibili':
+        case 'douban_book':
+        case 'douban_movie':
+        case 'twitter':
+        case 'wikipedia':
+        case 'zhihu': {
+            sub = (tmp: any) => tmp
+            break
+        }
+        default: {
+            let _: never = itemType
+            sub = _
+            break
+        }
+    }
+
+    let detobj = await sub(det)
+    obj.details = detobj
+    return obj as T_Item<T>
 }

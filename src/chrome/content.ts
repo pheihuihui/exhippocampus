@@ -25,5 +25,5 @@ function show_dialog_exhippocampus() {
 
 chrome.runtime.onMessage.addListener((mess, sender, sendResp) => {
     console.log(mess)
+    sendResp('copy')
 })
-

@@ -1,8 +1,8 @@
-import ReactDOM from "react-dom";
-import { _tags } from "../components/CustomizedHook";
+let ifr = document.createElement('iframe')
+ifr.height = '1200'
+ifr.width = '900'
+ifr.style.background = 'white'
+ifr.style.border = 'aqua'
 
-// fetch('/query/tags', { method: 'GET' })
-//     .then(x => x.json())
-//     .then(x => { localStorage.setItem('exhippo_tags', x) })
+document.body.appendChild(ifr)
 
-ReactDOM.render(_tags, document.body)
