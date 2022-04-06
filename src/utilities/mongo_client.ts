@@ -70,6 +70,14 @@ export async function searchItem(keywords: string) {
 
 }
 
+export async function getPages(title: string) {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    let db = client.db(APPDBNAME)
+    let coll = db.collection(APPCOLLNAME_PAGES)
+    let arr = await coll.find({ title: title }).toArray()
+    return arr
+}
+
 export async function disconnectMongo() {
     let client = await ExhippocampusDataManager.getMongoClient()
     await client.close()

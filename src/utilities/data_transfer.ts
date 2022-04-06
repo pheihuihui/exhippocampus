@@ -89,14 +89,16 @@ export async function serializeItem<T extends T_Source>(itemType: T, item: T_Ite
 export async function deserializeItem<T extends T_Source>(itemType: T, str: string) {
     let sub: F_Item_Details_Deserialization<any>
     let obj = JSON.parse(str) as T_Item<any>
-    let det = obj.details
+    let det = JSON.parse(obj.details)
 
     switch (itemType) {
         case 'general': {
             let _sub: F_Item_Details_Deserialization<'general'>
             _sub = async _det => {
-                let tmp = await b64toBlob(_det.pageContent)
-                return ({ pageContent: tmp })
+                let cont = _det.pageContent
+                let dt = await fetch(cont)
+                let blb = await dt.blob()
+                return ({ pageContent: blb })
             }
             sub = _sub
             break

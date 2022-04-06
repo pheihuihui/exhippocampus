@@ -15,7 +15,7 @@ fs.copyFileSync('./asserts/main.html', `${dir_client}/main.html`)
 es.build({
     entryPoints: ['./src/client/index.ts'],
     outfile: `${dir_client}/client.js`,
-    minify: true,
+    minify: false,
     bundle: true,
     tsconfig: './tsconfig.json',
     platform: 'browser',
