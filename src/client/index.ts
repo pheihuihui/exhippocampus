@@ -14,5 +14,5 @@ fetch('/query/pages/title')
     .then(x => {
         let tmp = x.details.pageContent
         let blb = new Blob([tmp], { type: 'text/mhtml' })
-        ifr.src = URL.createObjectURL(blb)
+        ifr.src = 'http://infolab.stanford.edu/pub/papers/google.pdf'
     })
