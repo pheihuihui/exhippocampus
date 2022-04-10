@@ -1,3 +1,4 @@
 export type T_GeneralPage = {
-    pageContent: Blob
+    type: 'mhtml' | 'html'
+    content: string
 }
