@@ -1,4 +1,5 @@
-import { F_Item_Details_Deserialization, F_Item_Details_Serialization, I_Sources, T_Item, T_SerializedDetail, T_Source } from '../meta/item'
+import { F_Item_Details_Deserialization, F_Item_Details_Serialization, I_Sources, T_Item, T_Source } from '../meta/item'
+import { Blob as _Blob } from 'buffer'
 
 function _readAsDataURL(blob: Blob) {
     return new Promise<string>((resolve, reject) => {
@@ -19,22 +20,21 @@ function _readAsDataURL(blob: Blob) {
 const b64toBlob = (base64: string, type = 'application/octet-stream') =>
     fetch(`data:${type};base64,${base64}`).then(res => res.blob())
 
+const dataURItoBlob_node = (dataURI: string) => {
+    var data = dataURI.split(',')[1]
+    var byteString = Buffer.from(data, "base64")
+    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0]
+    var blob = new _Blob([byteString], { type: mimeString })
+    return blob
+}
+
 export async function serializeItem<T extends T_Source>(itemType: T, item: T_Item<T>) {
 
     let sub: F_Item_Details_Serialization<any>
 
     switch (itemType) {
         case 'general': {
-            let _sub: F_Item_Details_Serialization<'general'>
-            _sub = async _detail => {
-                let str = await _readAsDataURL(_detail.pageContent)
-                let obj: Record<keyof I_Sources['general'], string> = {
-                    pageContent: str
-                }
-                return JSON.stringify(obj)
-            }
-            sub = _sub
-            break
+            return JSON.stringify(item)
         }
         case 'bilibili': {
             let _sub: F_Item_Details_Serialization<'bilibili'>
@@ -93,11 +93,41 @@ export async function deserializeItem<T extends T_Source>(itemType: T, str: stri
 
     switch (itemType) {
         case 'general': {
-            let _sub: F_Item_Details_Deserialization<'general'>
+            let res: T_Item<'general'> = JSON.parse(str)
+            return res
+        }
+        case 'bilibili':
+        case 'douban_book':
+        case 'douban_movie':
+        case 'twitter':
+        case 'wikipedia':
+        case 'zhihu': {
+            sub = (tmp: any) => tmp
+            break
+        }
+        default: {
+            let _: never = itemType
+            sub = _
+            break
+        }
+    }
+
+    let detobj = await sub(det)
+    obj.details = detobj
+    return obj as T_Item<T>
+}
+
+export async function deserializeItem_node<T extends T_Source>(itemType: T, str: string) {
+    let sub: F_Item_Details_Deserialization<any>
+    let obj = JSON.parse(str) as T_Item<any>
+    let det = JSON.parse(obj.details)
+
+    switch (itemType) {
+        case 'general': {
+            let _sub: F_Item_Details_Deserialization<any>
             _sub = async _det => {
                 let cont = _det.pageContent
-                let dt = await fetch(cont)
-                let blb = await dt.blob()
+                let blb = dataURItoBlob_node(cont)
                 return ({ pageContent: blb })
             }
             sub = _sub

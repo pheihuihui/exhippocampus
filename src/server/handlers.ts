@@ -1,6 +1,9 @@
 import { T_HandlerInfo } from '../meta/handler'
-import { REQ_NAMES_INSERT, T_Item_Mongo } from '../meta/item'
+import { REQ_NAMES_INSERT, T_Item, T_Item_Mongo } from '../meta/item'
 import { getAllTags, getPages, insertNewItem } from '../utilities/mongo_client'
+import { deserializeItem_node } from "../utilities/data_transfer"
+import { mhtml2html } from '../utilities/mhtml2html'
+import { Blob as _Blob } from 'buffer'
 
 const h_InsertGeneralPage: T_HandlerInfo = {
     name: REQ_NAMES_INSERT['general'],
@@ -31,7 +34,13 @@ const h_QueryPages: T_HandlerInfo = {
     handler: async (req, res) => {
         let arr = await getPages(req.params.title)
         if (arr.length > 0) {
-            let tmp = arr[0]
+            let tmp = arr[0] as unknown as T_Item<'general'>
+            let det = tmp.details
+            if (det.type == 'mhtml') {
+                let str1 = mhtml2html.convert(det.content)
+                det.content = str1.serialize()
+                det.type = 'html'
+            }
             let str = JSON.stringify(tmp)
             res.json(str)
         } else {

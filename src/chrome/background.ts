@@ -18,7 +18,8 @@ const listener: T_Callback = function (info, tab) {
     if (info.menuItemId == contextMenuId) {
         let tbid = tab?.id
         if (tbid) {
-            chrome.pageCapture.saveAsMHTML({ tabId: tbid }, data => {
+            chrome.pageCapture.saveAsMHTML({ tabId: tbid }, async data => {
+                let txt = await data?.text()
                 if (data?.size) {
                     insertData('general', {
                         source: 'general',
@@ -26,7 +27,8 @@ const listener: T_Callback = function (info, tab) {
                         timestamp: Date.now(),
                         language: ['cn'],
                         details: {
-                            pageContent: data
+                            type: 'mhtml',
+                            content: txt!
                         },
                         tags: []
                     })

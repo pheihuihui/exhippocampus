@@ -1,4 +1,5 @@
 import { deserializeItem } from "../utilities/data_transfer"
+import { mhtml2html } from "../utilities/mhtml2html"
 
 let ifr = document.createElement('iframe')
 ifr.height = '1200'
@@ -10,9 +11,18 @@ document.body.appendChild(ifr)
 
 fetch('/query/pages/title')
     .then(x => x.json())
-    .then(x => deserializeItem('general', x))
+    .then(JSON.parse)
     .then(x => {
-        let tmp = x.details.pageContent
-        let blb = new Blob([tmp], { type: 'text/mhtml' })
-        ifr.src = 'http://infolab.stanford.edu/pub/papers/google.pdf'
+        let det = x.details
+        if (det.type == 'html') {
+            let frame = ifr.contentWindow
+            let doc = frame?.document
+            if (doc) {
+                doc.open()
+                doc.write(det.content)
+                doc.close()
+            }
+        } else {
+            console.log('not html')
+        }
     })
