@@ -32,7 +32,8 @@
         "jsdom": "19.0.0",
         "@types/jsdom": "16.2.14",
         "quoted-printable": "1.0.1",
-        "@types/quoted-printable": "1.0.0"
+        "@types/quoted-printable": "1.0.0",
+        "vis-network": "9.1.2"
     },
     "devDependencies": {
         "esbuild": "0.14.36",
