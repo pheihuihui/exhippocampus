@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import { ratings } from './douban_movie_ratings'
 import { MongoClient } from 'mongodb'
 import { CONF_SERVER } from '../utilities/configurations';
@@ -80,5 +79,9 @@ async function query404() {
     await client.close()
 }
 
-query_details('year')
+// query_details('year')
 // query404()
+
+fetch('https://nodejs.org/en/blog/announcements/v18-release-announce/')
+    .then(x => x.text())
+    .then(console.log)
