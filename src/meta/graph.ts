@@ -34,10 +34,12 @@ export interface I_Relation {
     'many': T_Relation_Many
 }
 
+export type T_Relation<K extends keyof I_Relation> = I_Relation[K] & { type: K, name: string }
+
 export type T_Graph = {
     id: T_Graph_ID
     nodes: Set<T_Node_ID>
-    relations: Array<I_Relation[keyof I_Relation] & { type: keyof I_Relation, name: string }>
+    relations: Array<T_Relation<keyof I_Relation>>
     name: string
 }
 

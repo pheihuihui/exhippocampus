@@ -1,12 +1,15 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
+import { T_Graph } from '../meta/graph'
 import { T_Item_Mongo, T_Source } from '../meta/item'
 import { CONF_SERVER } from './configurations'
+import { deserializeGraph, serializeGraph } from './data_transfer'
 
 const APPDBNAME = 'ExhippocampusDB'
 const APPCOLLNAME_PAGES = 'ExhippocampusColl_Pages'
 const APPCOLLNAME_TAGS = 'ExhippocampusColl_Tags'
 const APPCOLLNAME_PERSONS = 'ExhippocampusColl_Persons'
 const APPCOLLNAME_TESTDATA = 'ExhippocampusColl_Testdata'
+const APPCOLLNAME_GRAPH = 'ExhippocampusColl_Graphs'
 
 const COLL_NAMES_ITEM: Record<T_Source, string> = {
     douban_movie: APPCOLLNAME_TESTDATA,
@@ -46,6 +49,37 @@ export async function insertNewItem<T extends T_Source>(itemType: T, item: T_Ite
     return res
 }
 
+export async function insertNewGraph(gr: T_Graph) {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    let db = client.db(APPDBNAME)
+    let coll = db.collection(APPCOLLNAME_GRAPH)
+    let str = serializeGraph(gr)
+    let res = await coll.insertOne({ serialized: str, name: gr.name })
+        .then(res => res.insertedId.toString())
+        .catch(err => {
+            console.log(err)
+        })
+    return res
+}
+
+export async function getGraphsByName(name: string) {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    let db = client.db(APPDBNAME)
+    let coll = db.collection(APPCOLLNAME_GRAPH)
+    let arr = await coll.find({ name: name }).toArray()
+    return arr.map(x => x.serialized)
+}
+
+export async function getGraphById(id: string) {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    let db = client.db(APPDBNAME)
+    let coll = db.collection(APPCOLLNAME_GRAPH)
+    let arr = await coll.find({ "_id": new ObjectId(id) }).toArray()
+    if (arr.length == 1) {
+        return arr[0].serialized as string
+    }
+}
+
 export async function insertNewTag(tag: string) {
     let client = await ExhippocampusDataManager.getMongoClient()
     let db = client.db(APPDBNAME)
@@ -70,11 +104,20 @@ export async function searchItem(keywords: string) {
 
 }
 
-export async function getPages(title: string) {
+export async function getPagesByTitle(title: string) {
     let client = await ExhippocampusDataManager.getMongoClient()
     let db = client.db(APPDBNAME)
     let coll = db.collection(APPCOLLNAME_PAGES)
     let arr = await coll.find({ title: title }).toArray()
+    return arr
+}
+
+export async function getPagesByIds(ids: string[]) {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    let db = client.db(APPDBNAME)
+    let coll = db.collection(APPCOLLNAME_PAGES)
+    let objids = ids.map(x => new ObjectId(x))
+    let arr = await coll.find({ "_id": { "$in": objids } }).toArray()
     return arr
 }
 

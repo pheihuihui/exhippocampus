@@ -1,7 +1,6 @@
 import { T_HandlerInfo } from '../meta/handler'
 import { REQ_NAMES_INSERT, T_Item, T_Item_Mongo } from '../meta/item'
-import { getAllTags, getPages, insertNewItem } from '../utilities/mongo_client'
-import { deserializeItem_node } from "../utilities/data_transfer"
+import { getAllTags, getGraphById, getGraphsByName, getPagesByIds, getPagesByTitle, insertNewItem } from '../utilities/mongo_client'
 import { mhtml2html } from '../utilities/mhtml2html'
 import { Blob as _Blob } from 'buffer'
 
@@ -28,11 +27,11 @@ const h_QueryTags: T_HandlerInfo = {
     }
 }
 
-const h_QueryPages: T_HandlerInfo = {
-    name: '/query/pages/:title',
+const h_QueryPages_title: T_HandlerInfo = {
+    name: '/query/page/bytitle/:title',
     type: 'GET',
     handler: async (req, res) => {
-        let arr = await getPages(req.params.title)
+        let arr = await getPagesByTitle(req.params.title)
         if (arr.length > 0) {
             let tmp = arr[0] as unknown as T_Item<'general'>
             let det = tmp.details
@@ -49,8 +48,53 @@ const h_QueryPages: T_HandlerInfo = {
     }
 }
 
+const h_QueryPages_ids: T_HandlerInfo = {
+    name: '/query/page/byids/:ids',
+    type: 'GET',
+    handler: async (req, res) => {
+        let arr = await getPagesByIds(['626d6056c7997f7be816340e', '626d60b1c7997f7be816340f'])
+        if (arr.length > 0) {
+            let tmp1 = arr[0] as unknown as T_Item<'general'>
+            let tmp2 = arr[1] as unknown as T_Item<'general'>
+            let str = JSON.stringify(tmp1.title + tmp2.title)
+            res.json(str)
+        } else {
+            res.status(404)
+        }
+    }
+}
+
+const h_QueryGraphs_name: T_HandlerInfo = {
+    name: '/query/graph/byname/:name',
+    type: 'GET',
+    handler: async (req, res) => {
+        let arr = await getGraphsByName(req.params.name)
+        if (arr.length == 1) {
+            res.json(arr[0])
+        } else {
+            res.status(404)
+        }
+    }
+}
+
+const h_QueryGraphs_id: T_HandlerInfo = {
+    name: '/query/graph/byid/:id',
+    type: 'GET',
+    handler: async (req, res) => {
+        let ret = await getGraphById(req.params.id)
+        if (ret) {
+            res.json(ret)
+        } else {
+            res.status(404)
+        }
+    }
+}
+
 export const handlerInfos: T_HandlerInfo[] = [
     h_InsertGeneralPage,
     h_QueryTags,
-    h_QueryPages
+    h_QueryPages_title,
+    h_QueryPages_ids,
+    h_QueryGraphs_name,
+    h_QueryGraphs_id
 ]
