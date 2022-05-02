@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FC, useEffect } from "react";
 import { Data, Options } from "vis-network";
 import { DataSet, Node, Edge, Network } from 'vis-network/standalone/umd/vis-network.min'
@@ -67,27 +67,30 @@ function drawGraph(gr: T_Graph) {
                 break
         }
     })
+
     let container = document.getElementById(containerID) as HTMLDivElement
-    container.oncontextmenu = ev => {
-        console.log(ev)
-        return false
-    }
 
     let data: Data = {
         nodes: nodes,
         edges: edges,
     };
     let options: Options = {
-        physics: {
-            enabled: true
-        }
+        physics: false
     };
     let network = new Network(container, data, options);
 }
 
-export const GraphBoard: FC = () => {
+function customizeContextMenu() {
+    let container = document.getElementById(containerID) as HTMLDivElement
+    container.oncontextmenu = ev => {
+        console.log(ev)
+        return false
+    }
+}
 
-    const [graphId, setGraphId] = useState('626e8cc9594a510ed7208c0c')
+export const GraphBoard: FC<{ graphId: string }> = props => {
+
+    const id = props.graphId
 
     const sz = useWindowSize()
 
@@ -97,9 +100,10 @@ export const GraphBoard: FC = () => {
             .then(deserializeGraph)
 
     useEffect(() => {
-        fetchGraph(graphId)
+        fetchGraph(id)
             .then(drawGraph)
-    }, [graphId])
+            .then(customizeContextMenu)
+    }, [])
 
     return <div id={containerID} style={{ height: sz.height, width: sz.width }}></div>
 }

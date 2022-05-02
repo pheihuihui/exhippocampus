@@ -5,9 +5,9 @@ import { GraphBoard } from './GraphBoard'
 export const App: FC = () => {
     return (
         <div>
-            <GraphBoard />
+            <GraphBoard graphId="626e8cc9594a510ed7208c0c" />
         </div>
     )
 }
 
-export const _app = <GraphBoard />
+export const _app = <App />
