@@ -1,3 +1,4 @@
+import { T_GeneralImage } from "./general_image"
 import { T_GeneralPage } from "./general_site"
 import { T_Bili } from "./sites/bilibili"
 import { T_DoubanBook } from "./sites/douban_book"
@@ -28,7 +29,8 @@ export interface I_Sources {
     zhihu: T_Zhihu
     twitter: T_Twitter
     bilibili: T_Bili
-    general: T_GeneralPage
+    general: T_GeneralPage,
+    image: T_GeneralImage
 }
 
 export type T_Source = keyof I_Sources
@@ -42,7 +44,8 @@ export const REQ_NAMES_INSERT: T_ReqName = {
     zhihu: '/insert/zhihu',
     twitter: '/insert/twitter',
     bilibili: '/insert/bilibili',
-    general: '/insert/general'
+    general: '/insert/general',
+    image: '/insert/image'
 } as const
 
 export type T_Item<T extends T_Source> = {

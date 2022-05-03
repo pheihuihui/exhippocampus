@@ -1,24 +1,34 @@
+import { I_MessageResponseMap } from "../meta/chrome"
 import { I_Sources, REQ_NAMES_INSERT, T_Item, T_Item_Form, T_Source } from "../meta/item"
 import { CONF_CLIENT } from "../utilities/configurations"
 import { serializeItem } from "../utilities/data_transfer"
 import { sleep } from "../utilities/others"
 
-const contextMenuId = 'id_capture_content'
+const contextMenuId_page = 'id_capture_page'
+const contextMenuId_image = 'id_capture_image'
 const serverUrl = CONF_CLIENT.SERVER
 
 type T_Callback = Parameters<typeof chrome.contextMenus.onClicked.addListener>[0]
 
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
-        id: contextMenuId,
-        title: "Capture this page"
+        id: contextMenuId_page,
+        title: 'capture page',
+        contexts: ['page']
+    })
+    chrome.contextMenus.create({
+        id: contextMenuId_image,
+        title: 'capture image',
+        contexts: ["image"]
     })
 })
 
 const listener: T_Callback = async function (info, tab) {
-    if (info.menuItemId == contextMenuId) {
+    if (info.menuItemId == contextMenuId_page) {
         let tbid = tab?.id
         if (tbid) {
+
+            sendMessageToContent(tbid, 'general')
 
             let window = await chrome.windows.getCurrent()
             if (window.id) {
@@ -36,12 +46,20 @@ const listener: T_Callback = async function (info, tab) {
                         content: txt!
                     },
                     tags: [],
-                    link: tab?.url ?? 'unknown'
+                    link: tab?.url
                 })
 
                 await sleep(500)
                 await chrome.windows.update(window.id, { state: 'maximized' })
             }
+        }
+    }
+    if (info.menuItemId == contextMenuId_image) {
+        let url = info.srcUrl
+        if (url) {
+            fetch(url)
+                .then(x => x.headers.get('Content-Type'))
+                .then(console.log)
         }
     }
 }
@@ -81,8 +99,8 @@ function buildData<T extends T_Source>(source: T, form: T_Item_Form, details: I_
     }
 }
 
-function sendMessageToContent(tab: number) {
-    chrome.tabs.sendMessage(tab, 'hello', function (resp) {
+function sendMessageToContent<K extends keyof I_MessageResponseMap>(tab: number, mess: K) {
+    chrome.tabs.sendMessage<K, I_MessageResponseMap[K]>(tab, mess, function (resp) {
         console.log(resp)
     })
 }

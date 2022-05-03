@@ -1,3 +1,5 @@
+import { I_MessageResponseMap } from "../meta/chrome"
+
 const id_dialog = 'id_dialog_exhippocampus'
 
 function create_dialog_exhippocampus() {
@@ -23,7 +25,20 @@ function show_dialog_exhippocampus() {
     dialog?.showModal()
 }
 
-chrome.runtime.onMessage.addListener((mess, sender, sendResp) => {
-    console.log(mess)
-    sendResp('copy')
-})
+function response2backgroud<K extends keyof I_MessageResponseMap>(
+    mess: K,
+    sender: chrome.runtime.MessageSender,
+    sendResp: (response?: I_MessageResponseMap[K]) => void
+) {
+    if (mess == 'general') {
+        console.log('hi')
+        show_dialog_exhippocampus()
+    }
+    sendResp({
+        title: 'hello',
+        languages: [''],
+        tags: []
+    })
+}
+
+chrome.runtime.onMessage.addListener(response2backgroud)

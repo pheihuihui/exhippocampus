@@ -6,6 +6,7 @@ import { deserializeGraph, serializeGraph } from './data_transfer'
 
 const APPDBNAME = 'ExhippocampusDB'
 const APPCOLLNAME_PAGES = 'ExhippocampusColl_Pages'
+const APPCOLLNAME_IMAGES = 'ExhippocampusColl_Images'
 const APPCOLLNAME_TAGS = 'ExhippocampusColl_Tags'
 const APPCOLLNAME_PERSONS = 'ExhippocampusColl_Persons'
 const APPCOLLNAME_TESTDATA = 'ExhippocampusColl_Testdata'
@@ -18,7 +19,8 @@ const COLL_NAMES_ITEM: Record<T_Source, string> = {
     zhihu: APPCOLLNAME_TESTDATA,
     twitter: APPCOLLNAME_TESTDATA,
     bilibili: APPCOLLNAME_TESTDATA,
-    general: APPCOLLNAME_PAGES
+    general: APPCOLLNAME_PAGES,
+    image: APPCOLLNAME_IMAGES
 }
 
 class ExhippocampusDataManager {
