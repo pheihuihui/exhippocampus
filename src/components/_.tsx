@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { PageWindow } from "./PageWindow";
+import { TagsField } from './TagsField'
 import { GraphBoard } from './GraphBoard'
 
 export const App: FC = () => {
@@ -10,4 +10,5 @@ export const App: FC = () => {
     )
 }
 
-export const _app = <App />
+// export const _app = <GraphBoard graphId="626e8cc9594a510ed7208c0c" />
+export const _app = <TagsField />

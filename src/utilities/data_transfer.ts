@@ -73,6 +73,12 @@ export async function serializeItem<T extends T_Source>(itemType: T, item: T_Ite
             sub = _sub
             break
         }
+        case 'image': {
+            let _sub: F_Item_Details_Serialization<'zhihu'>
+            _sub = async _detail => ''
+            sub = _sub
+            break
+        }
         default: {
             const _: never = itemType
             sub = _
@@ -102,6 +108,7 @@ export async function deserializeItem<T extends T_Source>(itemType: T, str: stri
         case 'douban_movie':
         case 'twitter':
         case 'wikipedia':
+        case 'image':
         case 'zhihu': {
             sub = (tmp: any) => tmp
             break
@@ -139,6 +146,7 @@ export async function deserializeItem_node<T extends T_Source>(itemType: T, str:
         case 'douban_movie':
         case 'twitter':
         case 'wikipedia':
+        case 'image':
         case 'zhihu': {
             sub = (tmp: any) => tmp
             break

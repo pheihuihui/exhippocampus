@@ -20,25 +20,24 @@ function create_dialog_exhippocampus() {
     document.body.appendChild(dialog_exhippocampus)
 }
 
-function show_dialog_exhippocampus() {
-    let dialog = document.getElementById(id_dialog) as HTMLDialogElement
-    dialog?.showModal()
-}
+create_dialog_exhippocampus()
+let dialog = document.getElementById(id_dialog) as HTMLDialogElement
 
 function response2backgroud<K extends keyof I_MessageResponseMap>(
     mess: K,
     sender: chrome.runtime.MessageSender,
     sendResp: (response?: I_MessageResponseMap[K]) => void
 ) {
-    if (mess == 'general') {
-        console.log('hi')
-        show_dialog_exhippocampus()
-    }
-    sendResp({
-        title: 'hello',
-        languages: [''],
-        tags: []
-    })
+    dialog.showModal()
+    // if (mess == 'general') {
+    //     console.log('hi')
+    //     show_dialog_exhippocampus()
+    // }
+    // sendResp({
+    //     title: 'hello',
+    //     languages: [''],
+    //     tags: []
+    // })
 }
 
 chrome.runtime.onMessage.addListener(response2backgroud)
