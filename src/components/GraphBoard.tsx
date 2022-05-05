@@ -105,5 +105,5 @@ export const GraphBoard: FC<{ graphId: string }> = props => {
             .then(customizeContextMenu)
     }, [])
 
-    return <div id={containerID} style={{ height: sz.height, width: sz.width }}></div>
+    return <div id={containerID} className='exhi-graphcontainer' style={{ height: sz.height, width: sz.width }}></div>
 }

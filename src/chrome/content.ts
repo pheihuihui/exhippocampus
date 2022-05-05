@@ -28,16 +28,14 @@ function response2backgroud<K extends keyof I_MessageResponseMap>(
     sender: chrome.runtime.MessageSender,
     sendResp: (response?: I_MessageResponseMap[K]) => void
 ) {
-    dialog.showModal()
-    // if (mess == 'general') {
-    //     console.log('hi')
-    //     show_dialog_exhippocampus()
-    // }
-    // sendResp({
-    //     title: 'hello',
-    //     languages: [''],
-    //     tags: []
-    // })
+    if (mess == 'general') {
+        console.log('hi')
+    }
+    sendResp({
+        title: 'hello',
+        languages: [''],
+        tags: []
+    })
 }
 
 chrome.runtime.onMessage.addListener(response2backgroud)

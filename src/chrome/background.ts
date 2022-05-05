@@ -30,28 +30,29 @@ const listener: T_Callback = async function (info, tab) {
 
             sendMessageToContent(tbid, 'general')
 
-            // let window = await chrome.windows.getCurrent()
-            // if (window.id) {
-            //     await chrome.windows.update(window.id, { state: 'normal', width: 1275 })
-            //     await sleep(500)
+            let window = await chrome.windows.getCurrent()
+            if (window.id) {
+                console.log(window.id)
+                await chrome.windows.update(window.id, { state: 'normal', height: 1000, width: 1275 })
+                await sleep(500)
 
-            //     let txt = await getContentFromCurrentPage(tbid)
-            //     await insertData('general', {
-            //         source: 'general',
-            //         title: 'title',
-            //         timestamp: Date.now(),
-            //         language: ['cn'],
-            //         details: {
-            //             type: 'mhtml',
-            //             content: txt!
-            //         },
-            //         tags: [],
-            //         link: tab?.url
-            //     })
+                let txt = await getContentFromCurrentPage(tbid)
+                await insertData('general', {
+                    source: 'general',
+                    title: 'title',
+                    timestamp: Date.now(),
+                    language: ['cn'],
+                    details: {
+                        type: 'mhtml',
+                        content: txt!
+                    },
+                    tags: [],
+                    link: tab?.url
+                })
 
-            //     await sleep(500)
-            //     await chrome.windows.update(window.id, { state: 'maximized' })
-            // }
+                await sleep(500)
+                await chrome.windows.update(window.id, { state: 'maximized' })
+            }
         }
     }
     if (info.menuItemId == contextMenuId_image) {
