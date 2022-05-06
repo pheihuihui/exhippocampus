@@ -12,4 +12,4 @@ export const App: FC = () => {
 }
 
 // export const _app = <GraphBoard graphId="626e8cc9594a510ed7208c0c" />
-export const _app = <ItemDialog />
+export const _app = <TagsField />

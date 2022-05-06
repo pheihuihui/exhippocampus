@@ -4,6 +4,9 @@ import React, { FC, useEffect, useState } from 'react';
 import { IconButton } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 
+const url_query_tags = 'http://127.0.0.1:30000/query/tags'
+const url_insert_tag = 'http://127.0.0.1:30000/insert/tag'
+
 export const TagsField: FC = () => {
 
     const [isTagsUpdated, setIsTagsUpdated] = useState(true)
@@ -13,7 +16,7 @@ export const TagsField: FC = () => {
 
     useEffect(() => {
         if (isTagsUpdated) {
-            fetch('/query/tags')
+            fetch(url_query_tags)
                 .then(x => x.json())
                 .then(JSON.parse)
                 .then(setTags)
@@ -28,7 +31,7 @@ export const TagsField: FC = () => {
         let trimed = newTag.trim()
         if (trimed != '' && tags.findIndex(x => x == trimed) == -1) {
             let bd = JSON.stringify({ tag: trimed })
-            fetch('/insert/tag', { method: 'POST', body: bd })
+            fetch(url_insert_tag, { method: 'POST', body: bd })
                 .then(x => x.json())
                 .then(() => setIsTagsUpdated(true))
                 .then(() => setTagsVal([...tagsVal, trimed]))

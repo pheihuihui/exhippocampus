@@ -1,6 +1,5 @@
 {
     "name": "exhippocampus-crx",
-    "action": {},
     "manifest_version": 3,
     "version": "0.1",
     "description": "...",
@@ -21,15 +20,16 @@
             "js": [
                 "content.js"
             ],
-            "run_at": "document_idle",
-            "css": [
-                "content.css"
-            ]
+            "run_at": "document_idle"
         }
     ],
     "icons": {
         "16": "icon16.png",
         "48": "icon48.png",
         "128": "icon128.png"
+    },
+    "action": {
+        "default_title": "Youtube Autoplay",
+        "default_popup": "popup.html"
     }
 }

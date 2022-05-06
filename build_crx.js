@@ -11,6 +11,7 @@ fs.copyFileSync('./asserts/chrome-manifest.json', './crx/manifest.json')
 fs.copyFileSync('./asserts/icon16.png', './crx/icon16.png')
 fs.copyFileSync('./asserts/icon48.png', './crx/icon48.png')
 fs.copyFileSync('./asserts/icon128.png', './crx/icon128.png')
+fs.copyFileSync('./asserts/crx-popup.html', './crx/popup.html')
 
 es.buildSync({
     entryPoints: ['./src/chrome/content.ts'],
@@ -28,8 +29,16 @@ es.buildSync({
     tsconfig: './tsconfig.json'
 })
 
+es.buildSync({
+    entryPoints: ['./src/chrome/popup.ts'],
+    outfile: './crx/popup.js',
+    minify: false,
+    bundle: true,
+    tsconfig: './tsconfig.json'
+})
+
 const src_scss = './src/styles/_crx.scss'
-const dist_css = './crx/content.css'
+const dist_css = './crx/popup.css'
 
 let res = sass.renderSync({ file: src_scss })
 let css_content = res.css.toString()
