@@ -21,7 +21,10 @@
             "js": [
                 "content.js"
             ],
-            "run_at": "document_idle"
+            "run_at": "document_idle",
+            "css": [
+                "content.css"
+            ]
         }
     ],
     "icons": {

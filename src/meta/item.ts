@@ -69,7 +69,7 @@ export type F_Item_Details_Deserialization<T extends T_Source> = (detail: T_Seri
 
 export type T_Person = {
     ID: string
-    name?: string
+    name: string
     otherNames?: string[]
     image?: string
     birth?: string
