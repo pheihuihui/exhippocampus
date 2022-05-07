@@ -1,13 +1,7 @@
-type T_General = {} & T_Common
-type T_Image = {} & T_Common
+import { T_Item_Form } from "./item"
 
-type T_Common = {
-    title: string
-    languages?: string[]
-    tags?: string[]
-}
-
-export type I_MessageResponseMap = {
-    'general': T_General
-    'image': T_Image
+export interface I_MessageResponseMap {
+    'general': T_Item_Form
+    'image': T_Item_Form
+    'douban_movie': Omit<T_Item_Form, 'title' | 'language'>
 }

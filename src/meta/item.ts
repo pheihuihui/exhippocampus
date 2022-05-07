@@ -54,14 +54,14 @@ export type T_Item<T extends T_Source> = {
     timestamp: number
     language: 'none' | Array<'en' | 'cn' | 'jp' | 'other'>
     link?: string
-    relatedPersons?: string[]
+    relatedPersons: string[]
     details: I_Sources[T]
     tags: string[]
 }
 
 export type T_SerializedDetail<T extends T_Source> = Record<keyof T_Item<T>['details'], string>
 
-export type T_Item_Form = Omit<T_Item<any>, 'details' | 'timestamp'>
+export type T_Item_Form = Omit<T_Item<any>, 'details' | 'timestamp' | 'source' | 'link'>
 export type T_Item_Mongo = Replace<T_Item<any>, 'details', string>
 
 export type F_Item_Details_Serialization<T extends T_Source> = (item: T_Item<T>['details']) => Promise<string>

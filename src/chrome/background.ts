@@ -28,31 +28,57 @@ const listener: T_Callback = async function (info, tab) {
         let tbid = tab?.id
         if (tbid) {
 
-            sendMessageToContent(tbid, 'general')
+            let site = info.pageUrl.split('/')[2]
 
-            // let window = await chrome.windows.getCurrent()
-            // if (window.id) {
-            //     console.log(window.id)
-            //     await chrome.windows.update(window.id, { state: 'normal', height: 1000, width: 1275 })
-            //     await sleep(500)
+            switch (site) {
+                case 'movie.douban.com': {
+                    let resp = await sendMessageToContent(tbid, 'douban_movie')
+                    console.log(resp)
+                    // await insertData('douban_movie', {
+                    //     source: 'douban_movie',
+                    //     title: 'title',
+                    //     timestamp: Date.now(),
+                    //     language: 'none',
+                    //     details: {
 
-            //     let txt = await getContentFromCurrentPage(tbid)
-            //     await insertData('general', {
-            //         source: 'general',
-            //         title: 'title',
-            //         timestamp: Date.now(),
-            //         language: ['cn'],
-            //         details: {
-            //             type: 'mhtml',
-            //             content: txt!
-            //         },
-            //         tags: [],
-            //         link: tab?.url
-            //     })
+                    //     },
+                    //     tags: [],
+                    //     link: tab?.url
+                    // })
+                    break
+                }
+                case 'book.douban.com': {
+                    break
+                }
+                default: {
+                    sendMessageToContent(tbid, 'general')
+                    let window = await chrome.windows.getCurrent()
+                    if (window.id) {
+                        console.log(window.id)
+                        await chrome.windows.update(window.id, { state: 'normal', height: 1000, width: 1275 })
+                        await sleep(500)
 
-            //     await sleep(500)
-            //     await chrome.windows.update(window.id, { state: 'maximized' })
-            // }
+                        let txt = await getContentFromCurrentPage(tbid)
+                        await insertData('general', {
+                            source: 'general',
+                            title: 'title',
+                            timestamp: Date.now(),
+                            language: ['cn'],
+                            details: {
+                                type: 'mhtml',
+                                content: txt!
+                            },
+                            tags: [],
+                            link: tab?.url,
+                            relatedPersons: []
+                        })
+
+                        await sleep(500)
+                        await chrome.windows.update(window.id, { state: 'maximized' })
+                    }
+                    break
+                }
+            }
         }
     }
     if (info.menuItemId == contextMenuId_image) {
@@ -87,21 +113,10 @@ async function insertData<T extends T_Source>(itemType: T, item: T_Item<T>) {
     console.log(resp)
 }
 
-function buildData<T extends T_Source>(source: T, form: T_Item_Form, details: I_Sources[T], link?: string): T_Item<T> {
-    return {
-        source: source,
-        title: form.title,
-        timestamp: Date.now(),
-        language: form.language,
-        link: link,
-        relatedPersons: [],
-        details: details,
-        tags: []
-    }
-}
-
 function sendMessageToContent<K extends keyof I_MessageResponseMap>(tab: number, mess: K) {
-    chrome.tabs.sendMessage<K, I_MessageResponseMap[K]>(tab, mess, function (resp) {
-        console.log(resp)
+    return new Promise<I_MessageResponseMap[K]>(resolve => {
+        chrome.tabs.sendMessage<K, I_MessageResponseMap[K]>(tab, mess, function (resp) {
+            resolve(resp)
+        })
     })
 }

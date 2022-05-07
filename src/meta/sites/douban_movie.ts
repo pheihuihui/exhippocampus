@@ -7,16 +7,16 @@ export type T_DoubanMovie = {
     sid: string
     year: number
     intro?: string
-    director?: string[]
-    writer?: string[]
-    actor?: string[]
-    genre?: string[]
+    director: string[]
+    writer: string[]
+    actor: string[]
+    genre: string[]
     site?: string
     country: string[]
-    language?: string[]
+    language: string[]
     screen?: string[]
     duration?: number
-    subname?: string[]
+    subname: string[]
     imdb?: string
     my_rating: T_Rating
 }
