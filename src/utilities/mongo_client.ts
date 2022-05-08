@@ -50,6 +50,16 @@ export async function insertNewItem<T extends T_Source>(itemType: T, item: T_Ite
     return res
 }
 
+export async function _insertNewItem<T extends T_Source>(itemType: T, item: any) {
+    let coll = await getItemCollection(itemType)
+    let res = await coll.insertOne(item)
+        .then(res => res.insertedId.toString())
+        .catch(err => {
+            console.log(err)
+        })
+    return res
+}
+
 export async function getGraphsByName(name: string) {
     let client = await ExhippocampusDataManager.getMongoClient()
     let db = client.db(APPDBNAME)

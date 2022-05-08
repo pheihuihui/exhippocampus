@@ -21,6 +21,8 @@ export function _readAsDataURL(blob: Blob) {
 export const b64toBlob = (base64: string, type = 'application/octet-stream') =>
     fetch(`data:${type};base64,${base64}`).then(res => res.blob())
 
+export const dataURItoBlob = (uri: string) => fetch(uri).then(res => res.blob())
+
 export const dataURItoBlob_node = (dataURI: string) => {
     let data = dataURI.split(',')[1]
     let byteString = Buffer.from(data, "base64")

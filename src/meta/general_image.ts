@@ -1,4 +1,4 @@
-import { dataURItoBlob_node, _readAsDataURL } from "../utilities/others";
+import { dataURItoBlob, dataURItoBlob_node, _readAsDataURL } from "../utilities/others";
 
 export type T_GeneralImage = {
     mimeType: string,
@@ -22,9 +22,16 @@ export async function serializeImage(img: T_GeneralImage) {
     return JSON.stringify(img)
 }
 
-export async function deserializeImage(str: string) {
+export async function deserializeImage_node(str: string) {
     let obj = JSON.parse(str)
     let ctt = dataURItoBlob_node(obj.content)
+    obj.content = ctt
+    return obj
+}
+
+export async function deserializeImage(str: string) {
+    let obj = JSON.parse(str)
+    let ctt = dataURItoBlob(obj.content)
     obj.content = ctt
     return obj
 }
