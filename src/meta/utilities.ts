@@ -2,3 +2,5 @@ export type Replace<TypeToBeChecked, KeyToBeReplaced extends keyof TypeToBeCheck
     = Omit<TypeToBeChecked, KeyToBeReplaced> & {
         [P in KeyToBeReplaced]: NewValueToUse
     }
+
+export type ValueOf<T> = T[keyof T]

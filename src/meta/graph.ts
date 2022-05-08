@@ -43,3 +43,32 @@ export type T_Graph = {
     name: string
 }
 
+export const serializeGraph = (gr: T_Graph) => {
+    return JSON.stringify({
+        id: gr.id,
+        nodes: Array.from(gr.nodes),
+        relations: gr.relations.map(x => {
+            if (x.hasOwnProperty('many')) {
+                let y = x as unknown as I_Relation['many'] | I_Relation['namy2one'] | I_Relation['one2many']
+                Object.assign(y, { many: Array.from(y.many) })
+                return y
+            } else {
+                return x
+            }
+        }),
+        name: gr.name
+    })
+}
+
+export const deserializeGraph = (str: string) => {
+    let res = JSON.parse(str) as T_Graph
+    res.nodes = new Set(res.nodes)
+    res.relations.map(x => {
+        if (x.hasOwnProperty('many')) {
+            let y = x as unknown as I_Relation['many'] | I_Relation['namy2one'] | I_Relation['one2many']
+            Object.assign(y, { many: new Set(y.many) })
+            return y
+        }
+    })
+    return res
+}

@@ -1,33 +1,4 @@
 import { F_Item_Details_Deserialization, F_Item_Details_Serialization, I_Sources, T_Item, T_Source } from '../meta/item'
-import { Blob as _Blob } from 'buffer'
-import { I_Relation, T_Graph } from '../meta/graph'
-
-function _readAsDataURL(blob: Blob) {
-    return new Promise<string>((resolve, reject) => {
-        const fr = new FileReader()
-        fr.onerror = reject
-        fr.onload = () => {
-            let res = fr.result
-            if (typeof res == 'string') {
-                resolve(res)
-            } else {
-                reject()
-            }
-        }
-        fr.readAsDataURL(blob)
-    })
-}
-
-const b64toBlob = (base64: string, type = 'application/octet-stream') =>
-    fetch(`data:${type};base64,${base64}`).then(res => res.blob())
-
-const dataURItoBlob_node = (dataURI: string) => {
-    var data = dataURI.split(',')[1]
-    var byteString = Buffer.from(data, "base64")
-    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0]
-    var blob = new _Blob([byteString], { type: mimeString })
-    return blob
-}
 
 export async function serializeItem<T extends T_Source>(itemType: T, item: T_Item<T>) {
 
@@ -161,34 +132,4 @@ export async function deserializeItem_node<T extends T_Source>(itemType: T, str:
     let detobj = await sub(det)
     obj.details = detobj
     return obj as T_Item<T>
-}
-
-export const serializeGraph = (gr: T_Graph) => {
-    return JSON.stringify({
-        id: gr.id,
-        nodes: Array.from(gr.nodes),
-        relations: gr.relations.map(x => {
-            if (x.hasOwnProperty('many')) {
-                let y = x as unknown as I_Relation['many'] | I_Relation['namy2one'] | I_Relation['one2many']
-                Object.assign(y, { many: Array.from(y.many) })
-                return y
-            } else {
-                return x
-            }
-        }),
-        name: gr.name
-    })
-}
-
-export const deserializeGraph = (str: string) => {
-    let res = JSON.parse(str) as T_Graph
-    res.nodes = new Set(res.nodes)
-    res.relations.map(x => {
-        if (x.hasOwnProperty('many')) {
-            let y = x as unknown as I_Relation['many'] | I_Relation['namy2one'] | I_Relation['one2many']
-            Object.assign(y, { many: new Set(y.many) })
-            return y
-        }
-    })
-    return res
 }

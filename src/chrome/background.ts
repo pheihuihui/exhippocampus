@@ -85,7 +85,7 @@ const listener: T_Callback = async function (info, tab) {
         let url = info.srcUrl
         if (url) {
             fetch(url)
-                .then(x => x.headers.get('Content-Type'))
+                .then(x => x.blob())
                 .then(console.log)
         }
     }

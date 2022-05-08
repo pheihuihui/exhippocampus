@@ -2,8 +2,7 @@ import React from "react";
 import { FC, useEffect } from "react";
 import { Data, Options } from "vis-network";
 import { DataSet, Node, Edge, Network } from 'vis-network/standalone/umd/vis-network.min'
-import { T_Graph, T_Relation } from "../meta/graph";
-import { deserializeGraph } from "../utilities/data_transfer";
+import { deserializeGraph, T_Graph, T_Relation } from "../meta/graph";
 import { useWindowSize } from "./_hooks";
 
 const containerID = 'containerID'

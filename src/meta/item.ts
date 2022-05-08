@@ -1,52 +1,29 @@
 import { T_GeneralImage } from "./general_image"
-import { T_GeneralPage } from "./general_site"
-import { T_Bili } from "./sites/bilibili"
-import { T_DoubanBook } from "./sites/douban_book"
+import { T_GeneralPage } from "./general_page"
+import { T_Graph } from "./graph"
 import { T_DoubanMovie } from "./sites/douban_movie"
 import { T_Twitter } from "./sites/twitter"
-import { T_Wiki } from "./sites/wikipedia"
-import { T_Zhihu } from "./sites/zhihu"
-import { Replace } from "./utilities"
-
-const SOURCES = [
-    'douban_movie',
-    'douban_book',
-    'twitter',
-    'wikipedia',
-    'bilibili',
-    'github',
-    'zhihu',
-    'youtube',
-    'just_text',
-    'just_image',
-    'podcast'
-] as const
+import { Replace, ValueOf } from "./utilities"
 
 export interface I_Sources {
     douban_movie: T_DoubanMovie
-    douban_book: T_DoubanBook
-    wikipedia: T_Wiki
-    zhihu: T_Zhihu
     twitter: T_Twitter
-    bilibili: T_Bili
-    general: T_GeneralPage,
+    general: T_GeneralPage
     image: T_GeneralImage
+    graph: T_Graph
+    person: T_Person
 }
 
 export type T_Source = keyof I_Sources
 
-type T_ReqName = Record<T_Source, string>
-
-export const REQ_NAMES_INSERT: T_ReqName = {
+export const REQ_NAMES_INSERT: Record<T_Source, string> = {
     douban_movie: '/insert/douban_movie',
-    douban_book: '/insert/douban_book',
-    wikipedia: '/insert/wikipedia',
-    zhihu: '/insert/zhihu',
     twitter: '/insert/twitter',
-    bilibili: '/insert/bilibili',
     general: '/insert/general',
-    image: '/insert/image'
-} as const
+    image: '/insert/image',
+    graph: '/insert/graph',
+    person: '/insert/person',
+}
 
 export type T_Item<T extends T_Source> = {
     source: T
@@ -68,7 +45,6 @@ export type F_Item_Details_Serialization<T extends T_Source> = (item: T_Item<T>[
 export type F_Item_Details_Deserialization<T extends T_Source> = (detail: T_SerializedDetail<T>) => Promise<T_Item<T>['details']>
 
 export type T_Person = {
-    ID: string
     name: string
     otherNames?: string[]
     image?: string
