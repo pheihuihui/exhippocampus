@@ -1,7 +1,6 @@
+import { insertOneItem } from "../client/request"
 import { I_MessageResponseMap } from "../meta/chrome"
-import { I_Sources, REQ_NAMES_INSERT, T_Item, T_Item_Form, T_Source } from "../meta/item"
 import { CONF_CLIENT } from "../utilities/configurations"
-import { serializeItem } from "../utilities/data_transfer"
 import { sleep } from "../utilities/others"
 
 const contextMenuId_page = 'id_capture_page'
@@ -33,15 +32,12 @@ const listener: T_Callback = async function (info, tab) {
             switch (site) {
                 case 'movie.douban.com': {
                     let resp = await sendMessageToContent(tbid, 'douban_movie')
-                    console.log(resp)
-                    // await insertData('douban_movie', {
+                    // await insertOneItem('douban_movie', {
                     //     source: 'douban_movie',
                     //     title: 'title',
                     //     timestamp: Date.now(),
                     //     language: 'none',
-                    //     details: {
-
-                    //     },
+                    //     details: {},
                     //     tags: [],
                     //     link: tab?.url
                     // })
@@ -59,7 +55,7 @@ const listener: T_Callback = async function (info, tab) {
                         await sleep(500)
 
                         let txt = await getContentFromCurrentPage(tbid)
-                        await insertData('general', {
+                        await insertOneItem('general', {
                             source: 'general',
                             title: 'title',
                             timestamp: Date.now(),
@@ -104,13 +100,6 @@ async function getContentFromCurrentPage(tabid: number) {
             }
         })
     })
-}
-
-async function insertData<T extends T_Source>(itemType: T, item: T_Item<T>) {
-    let url = `http://${serverUrl}${REQ_NAMES_INSERT[itemType]}`
-    let str = await serializeItem(itemType, item)
-    let resp = await fetch(url, { method: 'POST', body: str })
-    console.log(resp)
 }
 
 function sendMessageToContent<K extends keyof I_MessageResponseMap>(tab: number, mess: K) {

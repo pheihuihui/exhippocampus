@@ -22,7 +22,7 @@ const REQ_NAMES_QUERY = {
     person: '/query/person',
 } as const
 
-async function insertOneItem<T extends T_Source>(itemType: T, data: T_Item<T>) {
+export async function insertOneItem<T extends T_Source>(itemType: T, data: T_Item<T>) {
     let str = await serializeItem(itemType, data)
     let url = `http://${serverUrl}${REQ_NAMES_INSERT[itemType]}`
     let resp = await fetch(url, { method: 'POST', body: str })
