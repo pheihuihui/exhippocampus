@@ -109,3 +109,7 @@ function sendMessageToContent<K extends keyof I_MessageResponseMap>(tab: number,
         })
     })
 }
+
+chrome.commands.onCommand.addListener(function (command) {
+    console.log(command)
+})
