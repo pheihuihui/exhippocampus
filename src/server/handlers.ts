@@ -119,10 +119,10 @@ const h_QueryGraphs_id: T_HandlerInfo = {
 }
 
 export const handlerInfos: T_HandlerInfo[] = [
-    h_InsertGeneralPage_
+    h_InsertGeneralPage_,
     // h_InsertGeneralPage,
-    // h_InsertNewTag,
-    // h_QueryTags,
+    h_InsertNewTag,
+    h_QueryTags
     // h_QueryPages_title,
     // h_QueryPages_ids,
     // h_QueryGraphs_name,

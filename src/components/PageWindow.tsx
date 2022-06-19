@@ -35,7 +35,8 @@ export const PageWindow: FC = () => {
             <iframe
                 width={size.width}
                 height={size.height * 0.9}
-                id={iframeID} />
+                id={iframeID}
+            />
         </div>
     )
 }

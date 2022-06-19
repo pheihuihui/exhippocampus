@@ -29,7 +29,6 @@
         "128": "icon128.png"
     },
     "action": {
-        "default_title": "Youtube Autoplay",
         "default_popup": "popup.html"
     },
     "commands": {

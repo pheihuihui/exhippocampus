@@ -7,7 +7,7 @@ function response2backgroud<K extends keyof I_MessageResponseMap>(
     sendResp: (response?: I_MessageResponseMap[K]) => void
 ) {
     switch (mess) {
-        case 'douban_movie':
+        case 'douban_movie': {
             let mov: I_MessageResponseMap['douban_movie'] = {
                 relatedPersons: [],
                 tags: []
@@ -15,8 +15,11 @@ function response2backgroud<K extends keyof I_MessageResponseMap>(
             // @ts-ignore 
             sendResp(xxx)
             return
-        default:
+        }
+        default: {
+            alert('11')
             return
+        }
     }
 }
 
@@ -109,7 +112,7 @@ function crawlDoubanMoviePage() {
     return res
 }
 
-
 if (document.URL.indexOf('https://movie.douban.com/subject/') == 0) {
-    crawlDoubanMoviePage()
+    let res = crawlDoubanMoviePage()
+    console.log(res)
 }

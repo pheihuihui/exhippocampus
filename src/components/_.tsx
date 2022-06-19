@@ -1,15 +1,29 @@
-import React, { FC } from "react";
+import React, { FC, Fragment, useState } from "react";
 import { TagsField } from './TagsField'
-import { GraphBoard } from './GraphBoard'
-import { ItemDialog } from './ItemDialog'
+import { Button, TextField } from "@mui/material";
 
 export const App: FC = () => {
+
+    const [textInput, setTextInput] = useState('')
+
     return (
-        <div>
-            <GraphBoard graphId="626e8cc9594a510ed7208c0c" />
-        </div>
+        <Fragment>
+            <TextField
+                label="Title"
+                style={{ width: 500 }}
+                value={textInput}
+                onChange={(event) => {
+                    setTextInput(event.target.value)
+                }}
+            />
+            <TagsField />
+            <Button
+                variant="contained"
+                style={{}}
+                onClick={() => { alert(textInput) }}
+            >Confirm</Button>
+        </Fragment>
     )
 }
 
-// export const _app = <GraphBoard graphId="626e8cc9594a510ed7208c0c" />
-export const _app = <TagsField />
+export const _app = <App />

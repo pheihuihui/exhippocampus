@@ -47,7 +47,7 @@ const listener: T_Callback = async function (info, tab) {
                     break
                 }
                 default: {
-                    sendMessageToContent(tbid, 'general')
+                    let resp = await sendMessageToContent(tbid, 'general')
                     let window = await chrome.windows.getCurrent()
                     if (window.id) {
                         console.log(window.id)
@@ -57,7 +57,7 @@ const listener: T_Callback = async function (info, tab) {
                         let txt = await getContentFromCurrentPage(tbid)
                         await insertOneItem('general', {
                             source: 'general',
-                            title: 'title',
+                            title: resp.title,
                             timestamp: Date.now(),
                             language: ['cn'],
                             details: {
@@ -110,6 +110,7 @@ function sendMessageToContent<K extends keyof I_MessageResponseMap>(tab: number,
     })
 }
 
-chrome.commands.onCommand.addListener(function (command) {
-    console.log(command)
+chrome.commands.onCommand.addListener((command, tab) => {
+    console.log(tab.id)
 })
+

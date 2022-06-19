@@ -1,5 +1,4 @@
 import { T_Graph } from "../meta/graph"
-import { disconnectMongo, insertNewGraph } from "../utilities/mongo_client"
 
 let gr: T_Graph = {
     id: 'id46',
@@ -67,8 +66,3 @@ let gr: T_Graph = {
     name: 'the secret of Psalm 46'
 }
 
-
-insertNewGraph(gr)
-    .then(console.log)
-    .then(disconnectMongo)
-    .then(() => { console.log('closed') })

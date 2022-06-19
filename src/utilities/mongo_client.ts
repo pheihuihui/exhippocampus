@@ -1,5 +1,4 @@
 import { MongoClient, ObjectId } from 'mongodb'
-import { T_Graph } from '../meta/graph'
 import { T_Item_Mongo, T_Source } from '../meta/item'
 import { CONF_SERVER } from './configurations'
 
