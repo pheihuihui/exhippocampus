@@ -1,5 +1,8 @@
 {
-    "db": {
+    "server": {
         "url": "http://127.0.0.1:30000"
+    },
+    "mongodb": {
+        "url": "mongodb://localhost:27017/?readPreference=primary&directConnection=true&ssl=false"
     }
 }

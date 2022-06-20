@@ -29,7 +29,7 @@ export type T_Item<T extends T_Source> = {
     source: T
     title: string
     timestamp: number
-    language: 'none' | Array<'en' | 'cn' | 'jp' | 'other'>
+    language: 'none' | Array<'en' | 'cn' | 'cn_hk' | 'cn_tw' | 'jp' | 'other'>
     link?: string
     relatedPersons: string[]
     details: I_Sources[T]
@@ -48,6 +48,6 @@ export type T_Person = {
     name: string
     otherNames?: string[]
     image?: string
-    birth?: string
-    death?: string
+    birth?: number
+    death?: number
 }

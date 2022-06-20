@@ -1,6 +1,15 @@
 import { T_HandlerInfo } from '../meta/handler'
 import { REQ_NAMES_INSERT, T_Item, T_Item_Mongo } from '../meta/item'
-import { getAllTags, getGraphById, getGraphsByName, getPagesByIds, getPagesByTitle, insertNewItem, insertNewTag, _insertNewItem } from '../utilities/mongo_client'
+import {
+    getAllPersonNames,
+    getAllTags,
+    getGraphById,
+    getGraphsByName,
+    getPagesByIds,
+    getPagesByTitle,
+    insertNewItem,
+    insertNewTag
+} from '../utilities/mongo_client'
 import { mhtml2html } from '../utilities/mhtml2html'
 import { Blob as _Blob } from 'buffer'
 
@@ -23,7 +32,7 @@ const h_InsertGeneralPage_: T_HandlerInfo = {
     type: 'POST',
     handler: async (req, res) => {
         let item = req.body
-        let ret = await _insertNewItem('general', item)
+        let ret = await insertNewItem('general', item)
         if (ret) {
             res.json(ret)
         } else {
@@ -51,6 +60,15 @@ const h_QueryTags: T_HandlerInfo = {
     type: 'GET',
     handler: async (req, res) => {
         let arr = await getAllTags()
+        res.json(JSON.stringify(arr))
+    }
+}
+
+const h_QueryPersonNames: T_HandlerInfo = {
+    name: '/query/persons/names',
+    type: 'GET',
+    handler: async (req, res) => {
+        let arr = await getAllPersonNames()
         res.json(JSON.stringify(arr))
     }
 }
@@ -122,7 +140,8 @@ export const handlerInfos: T_HandlerInfo[] = [
     h_InsertGeneralPage_,
     // h_InsertGeneralPage,
     h_InsertNewTag,
-    h_QueryTags
+    h_QueryTags,
+    h_QueryPersonNames
     // h_QueryPages_title,
     // h_QueryPages_ids,
     // h_QueryGraphs_name,

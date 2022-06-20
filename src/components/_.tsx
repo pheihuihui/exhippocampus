@@ -1,5 +1,7 @@
 import React, { FC, Fragment, useState } from "react";
 import { TagsField } from './TagsField'
+import { PersonsField } from './PersonsField'
+import { LanguageSelect } from './LanguageSelect'
 import { Button, TextField } from "@mui/material";
 
 export const App: FC = () => {
@@ -17,6 +19,8 @@ export const App: FC = () => {
                 }}
             />
             <TagsField />
+            <PersonsField />
+            <LanguageSelect />
             <Button
                 variant="contained"
                 style={{}}

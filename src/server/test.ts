@@ -1,4 +1,7 @@
 import { T_Graph } from "../meta/graph"
+import { T_Person } from "../meta/item"
+import { disconnectMongo, insertNewItem, insertNewPerson } from "../utilities/mongo_client"
+import { serializeItem } from '../utilities/data_transfer'
 
 let gr: T_Graph = {
     id: 'id46',
@@ -66,3 +69,16 @@ let gr: T_Graph = {
     name: 'the secret of Psalm 46'
 }
 
+let ps1: T_Person = {
+    name: 'Ludwig Wittgenstein',
+    otherNames: ['Ludwig Josef Johann Wittgenstein'],
+    birth: Date.parse('4/26/1889'),
+    death: Date.parse('4/29/1951')
+}
+
+let ps2: T_Person = {
+    name: 'Kurt Gödel',
+    otherNames: ['Kurt Friedrich Gödel'],
+    birth: Date.parse('4/28/1906'),
+    death: Date.parse('1/14/1978')
+}

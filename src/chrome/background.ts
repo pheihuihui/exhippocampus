@@ -1,11 +1,9 @@
 import { insertOneItem } from "../client/request"
 import { I_MessageResponseMap } from "../meta/chrome"
-import { CONF_CLIENT } from "../utilities/configurations"
 import { sleep } from "../utilities/others"
 
 const contextMenuId_page = 'id_capture_page'
 const contextMenuId_image = 'id_capture_image'
-const serverUrl = CONF_CLIENT.SERVER
 
 type T_Callback = Parameters<typeof chrome.contextMenus.onClicked.addListener>[0]
 

@@ -3,10 +3,9 @@ import TextField from '@mui/material/TextField';
 import React, { FC, useEffect, useState } from 'react';
 import { IconButton } from '@mui/material';
 import Add from '@mui/icons-material/Add';
-import config from '../appconfig.json'
 
-const url_query_tags = `${config.db.url}/query/tags`
-const url_insert_tag = `${config.db.url}/insert/tag`
+const url_query_tags = `/query/tags`
+const url_insert_tag = `/insert/tag`
 
 export const TagsField: FC = () => {
 

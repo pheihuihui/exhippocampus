@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb'
 import { T_Item_Mongo, T_Source } from '../meta/item'
-import { CONF_SERVER } from './configurations'
+import { mongodb } from '../appconfig.json'
 
 const APPDBNAME = 'ExhippocampusDB'
 const APPCOLLNAME_PAGES = 'ExhippocampusColl_Pages'
@@ -25,7 +25,7 @@ class ExhippocampusDataManager {
     private static client: MongoClient
     static async getMongoClient() {
         if (ExhippocampusDataManager.client && ExhippocampusDataManager.client) return this.client
-        let cli = await MongoClient.connect(CONF_SERVER.CONNSTR_NODE)
+        let cli = await MongoClient.connect(mongodb.url)
         this.client = cli
         return this.client
     }
@@ -39,7 +39,7 @@ async function getItemCollection<T extends T_Source>(itemType: T) {
     return coll
 }
 
-export async function insertNewItem<T extends T_Source>(itemType: T, item: T_Item_Mongo) {
+export async function insertNewItem<T extends T_Source>(itemType: T, item: any) {
     let coll = await getItemCollection(itemType)
     let res = await coll.insertOne(item)
         .then(res => res.insertedId.toString())
@@ -49,13 +49,20 @@ export async function insertNewItem<T extends T_Source>(itemType: T, item: T_Ite
     return res
 }
 
-export async function _insertNewItem<T extends T_Source>(itemType: T, item: any) {
-    let coll = await getItemCollection(itemType)
-    let res = await coll.insertOne(item)
+export async function insertNewPerson(person: any) {
+    let coll = await getItemCollection('person')
+    let res = await coll.insertOne(person)
         .then(res => res.insertedId.toString())
         .catch(err => {
             console.log(err)
         })
+    return res
+}
+
+export async function getAllPersonNames() {
+    let coll = await getItemCollection('person')
+    let _ = await coll.find().toArray()
+    let res = _.map(x => x['name'] as string)
     return res
 }
 

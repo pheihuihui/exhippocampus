@@ -1,8 +1,6 @@
 import { T_Source, T_Item } from "../meta/item"
-import { CONF_CLIENT } from "../utilities/configurations"
+import { server } from "../appconfig.json"
 import { serializeItem } from "../utilities/data_transfer"
-
-const serverUrl = CONF_CLIENT.SERVER
 
 const REQ_NAMES_INSERT = {
     douban_movie: '/insert/douban_movie',
@@ -24,7 +22,7 @@ const REQ_NAMES_QUERY = {
 
 export async function insertOneItem<T extends T_Source>(itemType: T, data: T_Item<T>) {
     let str = await serializeItem(itemType, data)
-    let url = `http://${serverUrl}${REQ_NAMES_INSERT[itemType]}`
+    let url = `http://${server.url}${REQ_NAMES_INSERT[itemType]}`
     let resp = await fetch(url, { method: 'POST', body: str })
     let ret = await resp.json()
     return ret
