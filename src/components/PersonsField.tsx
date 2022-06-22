@@ -1,10 +1,15 @@
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import React, { FC, useEffect, useState } from 'react';
+import { server } from '../appconfig.json'
 
-const url_query_person_names = `/query/persons/names`
+const url_query_person_names = `${server.url}/query/persons/names`
 
-export const PersonsField: FC = () => {
+interface I_PersonsFieldProps {
+    onChange: (arr: string[]) => void
+}
+
+export const PersonsField: FC<I_PersonsFieldProps> = props => {
 
     const [persons, setPersons] = useState<string[]>([])
     const [persons_, setPersons_] = useState<string[]>(persons)
@@ -21,7 +26,7 @@ export const PersonsField: FC = () => {
             <Autocomplete
                 multiple
                 value={persons_}
-                onChange={(event, newVal) => { setPersons_(newVal) }}
+                onChange={(event, newVal) => { setPersons_(newVal); props.onChange(newVal) }}
                 id="multiple-limit-tags"
                 options={persons}
                 getOptionLabel={x => x}

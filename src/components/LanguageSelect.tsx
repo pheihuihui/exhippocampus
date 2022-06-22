@@ -1,16 +1,35 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
-import React from "react"
+import React, { useState } from "react"
 import { FC } from "react"
 
-export const LanguageSelect: FC = () => {
+interface I_LanguageSelectProps {
+    onChange: (arr: Array<string>) => void
+}
+
+export const LanguageSelect: FC<I_LanguageSelectProps> = props => {
+
+    const [langs, setLangs] = useState(new Set<string>())
+
     return (
         <FormGroup row={true}>
-            <FormControlLabel control={<Checkbox name="en" />} label="en" />
-            <FormControlLabel control={<Checkbox name="cn" />} label="cn" />
-            <FormControlLabel control={<Checkbox name="cn_hk" />} label="cn_hk" />
-            <FormControlLabel control={<Checkbox name="cn_tw" />} label="cn_tw" />
-            <FormControlLabel control={<Checkbox name="jp" />} label="jp" />
-            <FormControlLabel control={<Checkbox name="other" />} label="other" />
+            {['en', 'cn', 'cn_hk', 'cn_tw', 'jp', 'other'].map(_ => {
+                return (
+                    <FormControlLabel
+                        key={`lang_checkbox_${_}`}
+                        control={<Checkbox name={_} />}
+                        label={_}
+                        onChange={(ev, checked) => {
+                            if (checked) {
+                                setLangs(langs.add(_))
+                            } else {
+                                if (langs.delete(_)) {
+                                    setLangs(langs)
+                                }
+                            }
+                            props.onChange(Array.from(langs).sort())
+                        }}
+                    />)
+            })}
         </FormGroup>
     )
 }

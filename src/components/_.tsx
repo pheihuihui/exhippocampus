@@ -7,6 +7,9 @@ import { Button, TextField } from "@mui/material";
 export const App: FC = () => {
 
     const [textInput, setTextInput] = useState('')
+    const [langs, setLangs] = useState<string[]>([])
+    const [tags, setTags] = useState<string[]>([])
+    const [persons, setPersons] = useState<string[]>([])
 
     return (
         <Fragment>
@@ -18,14 +21,20 @@ export const App: FC = () => {
                     setTextInput(event.target.value)
                 }}
             />
-            <TagsField />
-            <PersonsField />
-            <LanguageSelect />
-            <Button
-                variant="contained"
-                style={{}}
-                onClick={() => { alert(textInput) }}
-            >Confirm</Button>
+            <TagsField onChange={arr => { setTags(arr) }} />
+            <PersonsField onChange={arr => { setPersons(arr) }} />
+            <LanguageSelect onChange={arr => { setLangs(arr) }} />
+            <Button variant="contained" style={{}} onClick={() => {
+                let obj = {
+                    title: textInput,
+                    langs: langs,
+                    tags: tags,
+                    persons: persons
+                }
+                console.log(obj)
+            }}>
+                Confirm
+            </Button>
         </Fragment>
     )
 }

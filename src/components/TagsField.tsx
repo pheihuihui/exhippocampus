@@ -3,11 +3,16 @@ import TextField from '@mui/material/TextField';
 import React, { FC, useEffect, useState } from 'react';
 import { IconButton } from '@mui/material';
 import Add from '@mui/icons-material/Add';
+import { server } from '../appconfig.json'
 
-const url_query_tags = `/query/tags`
-const url_insert_tag = `/insert/tag`
+const url_query_tags = `${server.url}/query/tags`
+const url_insert_tag = `${server.url}/insert/tag`
 
-export const TagsField: FC = () => {
+interface I_TagsFieldProps {
+    onChange: (arr: string[]) => void
+}
+
+export const TagsField: FC<I_TagsFieldProps> = props => {
 
     const [isTagsUpdated, setIsTagsUpdated] = useState(true)
     const [tags, setTags] = useState<string[]>([])
@@ -33,8 +38,10 @@ export const TagsField: FC = () => {
             let bd = JSON.stringify({ tag: trimed })
             fetch(url_insert_tag, { method: 'POST', body: bd })
                 .then(x => x.json())
-                .then(() => setIsTagsUpdated(true))
-                .then(() => setTagsVal([...tagsVal, trimed]))
+                .then(() => {
+                    setIsTagsUpdated(true)
+                    setTagsVal([...tagsVal, trimed])
+                })
         }
     }
 
@@ -48,7 +55,10 @@ export const TagsField: FC = () => {
             <Autocomplete
                 multiple
                 value={tagsVal}
-                onChange={(event, newVal) => { setTagsVal(newVal) }}
+                onChange={(_, newVal) => {
+                    setTagsVal(newVal)
+                    props.onChange(newVal)
+                }}
                 id="multiple-limit-tags"
                 options={tags}
                 getOptionLabel={x => x}
@@ -64,9 +74,10 @@ export const TagsField: FC = () => {
                 value={newTag}
                 variant="outlined"
                 sx={{ width: '500px', height: 'auto' }}
-                onChange={ev => setNewTag(ev.target.value)}
+                onChange={ev => { setNewTag(ev.target.value) }}
                 InputProps={{ endAdornment: addButton }}
             />
         </div>
     );
 }
+
