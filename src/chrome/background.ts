@@ -1,5 +1,6 @@
 import { insertOneItem } from "../client/request"
 import { I_MessageResponseMap } from "../meta/chrome"
+import { T_Popup_Form } from "../meta/item"
 import { sleep } from "../utilities/others"
 
 const contextMenuId_page = 'id_capture_page'
@@ -28,50 +29,7 @@ const listener: T_Callback = async function (info, tab) {
             let site = info.pageUrl.split('/')[2]
 
             switch (site) {
-                case 'movie.douban.com': {
-                    let resp = await sendMessageToContent(tbid, 'douban_movie')
-                    // await insertOneItem('douban_movie', {
-                    //     source: 'douban_movie',
-                    //     title: 'title',
-                    //     timestamp: Date.now(),
-                    //     language: 'none',
-                    //     details: {},
-                    //     tags: [],
-                    //     link: tab?.url
-                    // })
-                    break
-                }
-                case 'book.douban.com': {
-                    break
-                }
-                default: {
-                    let resp = await sendMessageToContent(tbid, 'general')
-                    let window = await chrome.windows.getCurrent()
-                    if (window.id) {
-                        console.log(window.id)
-                        await chrome.windows.update(window.id, { state: 'normal', height: 1000, width: 1275 })
-                        await sleep(500)
-
-                        let txt = await getContentFromCurrentPage(tbid)
-                        await insertOneItem('general', {
-                            source: 'general',
-                            title: resp.title,
-                            timestamp: Date.now(),
-                            language: ['cn'],
-                            details: {
-                                type: 'mhtml',
-                                content: txt!
-                            },
-                            tags: [],
-                            link: tab?.url,
-                            relatedPersons: []
-                        })
-
-                        await sleep(500)
-                        await chrome.windows.update(window.id, { state: 'maximized' })
-                    }
-                    break
-                }
+                default: break
             }
         }
     }
@@ -86,6 +44,38 @@ const listener: T_Callback = async function (info, tab) {
 }
 
 chrome.contextMenus.onClicked.addListener(listener)
+
+chrome.runtime.onMessage.addListener(async (req: T_Popup_Form, sender, sendResp) => {
+    if (req.requestType == 'capture page') {
+        let tabs = await chrome.tabs.query({ active: true })
+        if (tabs[0] && tabs[0].id) {
+            let wd = await chrome.windows.get(tabs[0].windowId)
+
+            if (wd.id) {
+                await chrome.windows.update(wd.id, { state: 'normal', height: 1000, width: 1275 })
+                await sleep(500)
+
+                let txt = await getContentFromCurrentPage(tabs[0].id)
+                await insertOneItem('general', {
+                    source: 'general',
+                    title: req.data.title,
+                    timestamp: Date.now(),
+                    language: req.data.languages.length == 0 ? 'none' : req.data.languages,
+                    details: {
+                        type: 'mhtml',
+                        content: txt!
+                    },
+                    tags: req.data.tags,
+                    link: tabs[0].url,
+                    relatedPersons: []
+                })
+
+                await sleep(500)
+                await chrome.windows.update(wd.id, { state: 'maximized' })
+            }
+        }
+    }
+})
 
 async function getContentFromCurrentPage(tabid: number) {
     return new Promise<string>((resolve, reject) => {
@@ -109,6 +99,6 @@ function sendMessageToContent<K extends keyof I_MessageResponseMap>(tab: number,
 }
 
 chrome.commands.onCommand.addListener((command, tab) => {
+    console.log(command)
     console.log(tab.id)
 })
-

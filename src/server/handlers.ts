@@ -17,21 +17,8 @@ const h_InsertGeneralPage: T_HandlerInfo = {
     name: REQ_NAMES_INSERT['general'],
     type: 'POST',
     handler: async (req, res) => {
-        let item = JSON.parse(req.body) as T_Item_Mongo
-        let ret = await insertNewItem('general', item)
-        if (ret) {
-            res.json(ret)
-        } else {
-            res.status(500)
-        }
-    }
-}
-
-const h_InsertGeneralPage_: T_HandlerInfo = {
-    name: REQ_NAMES_INSERT['general'],
-    type: 'POST',
-    handler: async (req, res) => {
-        let item = req.body
+        let _ = req.body
+        let item = JSON.parse(_)
         let ret = await insertNewItem('general', item)
         if (ret) {
             res.json(ret)
@@ -137,8 +124,7 @@ const h_QueryGraphs_id: T_HandlerInfo = {
 }
 
 export const handlerInfos: T_HandlerInfo[] = [
-    h_InsertGeneralPage_,
-    // h_InsertGeneralPage,
+    h_InsertGeneralPage,
     h_InsertNewTag,
     h_QueryTags,
     h_QueryPersonNames

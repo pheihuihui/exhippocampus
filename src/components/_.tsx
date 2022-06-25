@@ -3,6 +3,7 @@ import { TagsField } from './TagsField'
 import { PersonsField } from './PersonsField'
 import { LanguageSelect } from './LanguageSelect'
 import { Button, TextField } from "@mui/material";
+import { T_Popup_Form } from "../meta/item";
 
 export const App: FC = () => {
 
@@ -25,13 +26,18 @@ export const App: FC = () => {
             <PersonsField onChange={arr => { setPersons(arr) }} />
             <LanguageSelect onChange={arr => { setLangs(arr) }} />
             <Button variant="contained" style={{}} onClick={() => {
-                let obj = {
-                    title: textInput,
-                    langs: langs,
-                    tags: tags,
-                    persons: persons
+                let obj: T_Popup_Form = {
+                    requestType: 'capture page',
+                    data: {
+                        title: textInput,
+                        languages: langs,
+                        tags: tags,
+                        relatedPersons: persons
+                    }
                 }
-                console.log(obj)
+                if (chrome && chrome.runtime) {
+                    chrome.runtime.sendMessage(obj)
+                }
             }}>
                 Confirm
             </Button>

@@ -42,17 +42,15 @@ async function getItemCollection<T extends T_Source>(itemType: T) {
 export async function insertNewItem<T extends T_Source>(itemType: T, item: any) {
     let coll = await getItemCollection(itemType)
     let res = await coll.insertOne(item)
-        .then(res => res.insertedId.toString())
-        .catch(err => {
-            console.log(err)
-        })
+        .then(_ => _.insertedId.toString())
+        .catch(console.log)
     return res
 }
 
 export async function insertNewPerson(person: any) {
     let coll = await getItemCollection('person')
     let res = await coll.insertOne(person)
-        .then(res => res.insertedId.toString())
+        .then(_ => _.insertedId.toString())
         .catch(err => {
             console.log(err)
         })

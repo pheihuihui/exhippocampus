@@ -25,7 +25,7 @@ export const TagsField: FC<I_TagsFieldProps> = props => {
                 .then(x => x.json())
                 .then(JSON.parse)
                 .then(setTags)
-                .then(() => setIsTagsUpdated(false))
+                .finally(() => setIsTagsUpdated(false))
         }
     }, [isTagsUpdated])
 
@@ -40,7 +40,7 @@ export const TagsField: FC<I_TagsFieldProps> = props => {
                 .then(x => x.json())
                 .then(() => {
                     setIsTagsUpdated(true)
-                    setTagsVal([...tagsVal, trimed])
+                    setNewTag('')
                 })
         }
     }

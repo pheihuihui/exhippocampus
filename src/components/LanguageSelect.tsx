@@ -12,7 +12,7 @@ export const LanguageSelect: FC<I_LanguageSelectProps> = props => {
 
     return (
         <FormGroup row={true}>
-            {['en', 'cn', 'cn_hk', 'cn_tw', 'jp', 'other'].map(_ => {
+            {['en', 'zh_cn', 'zh_hk', 'zh_tw', 'jp', 'other'].map(_ => {
                 return (
                     <FormControlLabel
                         key={`lang_checkbox_${_}`}

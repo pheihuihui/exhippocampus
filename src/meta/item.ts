@@ -29,11 +29,21 @@ export type T_Item<T extends T_Source> = {
     source: T
     title: string
     timestamp: number
-    language: 'none' | Array<'en' | 'cn' | 'cn_hk' | 'cn_tw' | 'jp' | 'other'>
+    language: 'none' | Array<string>
     link?: string
     relatedPersons: string[]
     details: I_Sources[T]
     tags: string[]
+}
+
+export type T_Popup_Form = {
+    requestType: 'capture page' | 'save image'
+    data: {
+        title: string,
+        languages: Array<string>,
+        tags: Array<string>,
+        relatedPersons: Array<string>
+    }
 }
 
 export type T_SerializedDetail<T extends T_Source> = Record<keyof T_Item<T>['details'], string>
