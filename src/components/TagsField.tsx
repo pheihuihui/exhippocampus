@@ -9,7 +9,7 @@ const url_query_tags = `${server.url}/query/tags`
 const url_insert_tag = `${server.url}/insert/tag`
 
 interface I_TagsFieldProps {
-    onChange: (arr: string[]) => void
+    onChange?: (arr: string[]) => void
 }
 
 export const TagsField: FC<I_TagsFieldProps> = props => {
@@ -57,7 +57,9 @@ export const TagsField: FC<I_TagsFieldProps> = props => {
                 value={tagsVal}
                 onChange={(_, newVal) => {
                     setTagsVal(newVal)
-                    props.onChange(newVal)
+                    if (props.onChange) {
+                        props.onChange(newVal)
+                    }
                 }}
                 id="multiple-limit-tags"
                 options={tags}

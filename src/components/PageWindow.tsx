@@ -1,14 +1,18 @@
 import React, { FC, useEffect } from "react"
 import { T_Item } from "../meta/item"
-import { useFetch, useWindowSize } from './_hooks'
+import { useFetch, useWindowSize } from '../hooks/_hooks'
 
 const iframeID = 'iframeID'
 
-export const PageWindow: FC = () => {
+interface I_PageWindowProps {
+    itemId: string
+}
+
+export const PageWindow: FC<I_PageWindowProps> = props => {
 
     const size = useWindowSize()
 
-    const { data, error } = useFetch<T_Item<'general'>>('/query/pages/title')
+    const { data, error } = useFetch<T_Item<'general'>>(`/query/page/byid/${props.itemId}`)
 
     useEffect(() => {
         const setIframeContent = (body: HTMLElement) => {
@@ -34,11 +38,9 @@ export const PageWindow: FC = () => {
         }}>
             <iframe
                 width={size.width}
-                height={size.height * 0.9}
+                height={size.height}
                 id={iframeID}
             />
         </div>
     )
 }
-
-export const _window = <PageWindow />

@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import { _app } from '../components/_'
+import { _popup } from '../components/_popup'
 
 let div = document.getElementById('rootdiv') as HTMLDivElement
 const root = createRoot(div)
-root.render(_app)
+root.render(_popup)

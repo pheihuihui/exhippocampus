@@ -60,4 +60,5 @@ export type T_Person = {
     image?: string
     birth?: number
     death?: number
+    description?: string
 }

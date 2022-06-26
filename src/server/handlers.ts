@@ -1,6 +1,7 @@
 import { T_HandlerInfo } from '../meta/handler'
 import { REQ_NAMES_INSERT, T_Item, T_Item_Mongo } from '../meta/item'
 import {
+    getAllPageIds,
     getAllPersonNames,
     getAllTags,
     getGraphById,
@@ -81,15 +82,28 @@ const h_QueryPages_title: T_HandlerInfo = {
     }
 }
 
-const h_QueryPages_ids: T_HandlerInfo = {
-    name: '/query/page/byids/:ids',
+const h_QueryAllPageIds: T_HandlerInfo = {
+    name: '/query/page/ids',
     type: 'GET',
     handler: async (req, res) => {
-        let arr = await getPagesByIds(['626d6056c7997f7be816340e', '626d60b1c7997f7be816340f'])
-        if (arr.length > 0) {
-            let tmp1 = arr[0] as unknown as T_Item<'general'>
-            let tmp2 = arr[1] as unknown as T_Item<'general'>
-            let str = JSON.stringify(tmp1.title + tmp2.title)
+        let arr = await getAllPageIds()
+        res.json(JSON.stringify(arr))
+    }
+}
+
+const h_QueryPage_by_id: T_HandlerInfo = {
+    name: '/query/page/byid/:id',
+    type: 'GET',
+    handler: async (req, res) => {
+        let _id = req.params.id
+        let arr = await getPagesByIds([_id])
+        if (arr.length = 1) {
+            let _page = arr[0] as unknown as T_Item<'general'>
+            if (_page.details.type == 'mhtml') {
+                let html = mhtml2html.convert(_page.details.content)
+                _page.details.content = html.serialize()
+            }
+            let str = JSON.stringify(_page)
             res.json(str)
         } else {
             res.status(404)
@@ -127,9 +141,10 @@ export const handlerInfos: T_HandlerInfo[] = [
     h_InsertGeneralPage,
     h_InsertNewTag,
     h_QueryTags,
-    h_QueryPersonNames
+    h_QueryPersonNames,
     // h_QueryPages_title,
-    // h_QueryPages_ids,
+    h_QueryAllPageIds,
+    h_QueryPage_by_id,
     // h_QueryGraphs_name,
     // h_QueryGraphs_id
 ]

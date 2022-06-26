@@ -82,6 +82,19 @@ export async function getGraphById(id: string) {
     }
 }
 
+export async function getAllPageIds() {
+    let client = await ExhippocampusDataManager.getMongoClient()
+    let db = client.db(APPDBNAME)
+    let coll = db.collection(APPCOLLNAME_PAGES)
+    let arr = await coll.find({}, { projection: { _id: 1, title: 1 } }).toArray()
+    return arr.map(_ => {
+        return {
+            id: _._id.toString(),
+            title: _.title
+        }
+    })
+}
+
 export async function insertNewTag(tag: string) {
     let client = await ExhippocampusDataManager.getMongoClient()
     let db = client.db(APPDBNAME)

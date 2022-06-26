@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { FC } from "react"
 
 interface I_LanguageSelectProps {
-    onChange: (arr: Array<string>) => void
+    onChange?: (arr: Array<string>) => void
 }
 
 export const LanguageSelect: FC<I_LanguageSelectProps> = props => {
@@ -26,7 +26,9 @@ export const LanguageSelect: FC<I_LanguageSelectProps> = props => {
                                     setLangs(langs)
                                 }
                             }
-                            props.onChange(Array.from(langs).sort())
+                            if (props.onChange) {
+                                props.onChange(Array.from(langs).sort())
+                            }
                         }}
                     />)
             })}

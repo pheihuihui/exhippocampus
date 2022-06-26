@@ -1,11 +1,11 @@
 import React, { FC, Fragment, useState } from "react";
 import { TagsField } from './TagsField'
-import { PersonsField } from './PersonsField'
+import { PersonField } from './PersonField'
 import { LanguageSelect } from './LanguageSelect'
 import { Button, TextField } from "@mui/material";
 import { T_Popup_Form } from "../meta/item";
 
-export const App: FC = () => {
+export const Popup: FC = () => {
 
     const [textInput, setTextInput] = useState('')
     const [langs, setLangs] = useState<string[]>([])
@@ -23,7 +23,7 @@ export const App: FC = () => {
                 }}
             />
             <TagsField onChange={arr => { setTags(arr) }} />
-            <PersonsField onChange={arr => { setPersons(arr) }} />
+            <PersonField onChange={arr => { setPersons(arr) }} />
             <LanguageSelect onChange={arr => { setLangs(arr) }} />
             <Button variant="contained" style={{}} onClick={() => {
                 let obj: T_Popup_Form = {
@@ -45,4 +45,4 @@ export const App: FC = () => {
     )
 }
 
-export const _app = <App />
+export const _popup = <Popup />

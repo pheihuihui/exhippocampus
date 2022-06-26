@@ -5,11 +5,11 @@ import { server } from '../appconfig.json'
 
 const url_query_person_names = `${server.url}/query/persons/names`
 
-interface I_PersonsFieldProps {
-    onChange: (arr: string[]) => void
+interface I_PersonFieldProps {
+    onChange?: (arr: string[]) => void
 }
 
-export const PersonsField: FC<I_PersonsFieldProps> = props => {
+export const PersonField: FC<I_PersonFieldProps> = props => {
 
     const [persons, setPersons] = useState<string[]>([])
     const [persons_, setPersons_] = useState<string[]>(persons)
@@ -26,7 +26,12 @@ export const PersonsField: FC<I_PersonsFieldProps> = props => {
             <Autocomplete
                 multiple
                 value={persons_}
-                onChange={(event, newVal) => { setPersons_(newVal); props.onChange(newVal) }}
+                onChange={(event, newVal) => {
+                    setPersons_(newVal)
+                    if (props.onChange) {
+                        props.onChange(newVal)
+                    }
+                }}
                 id="multiple-limit-tags"
                 options={persons}
                 getOptionLabel={x => x}
