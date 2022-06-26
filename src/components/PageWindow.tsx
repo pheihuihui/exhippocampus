@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from "react"
 import { T_Item } from "../meta/item"
 import { useFetch, useWindowSize } from '../hooks/_hooks'
+import { server } from '../appconfig.json'
 
 const iframeID = 'iframeID'
 
@@ -12,7 +13,7 @@ export const PageWindow: FC<I_PageWindowProps> = props => {
 
     const size = useWindowSize()
 
-    const { data, error } = useFetch<T_Item<'general'>>(`/query/page/byid/${props.itemId}`)
+    const { data, error } = useFetch<T_Item<'general'>>(`${server.url}/query/page/byid/${props.itemId}`)
 
     useEffect(() => {
         const setIframeContent = (body: HTMLElement) => {

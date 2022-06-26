@@ -1,22 +1,18 @@
-version: '3.4'
+version: '3.9'
 
 services:
-  doubanapi:
-    image: caryyu/douban-openapi-server
-    ports:
-      - 5000:5000
   mongodb:
-    image: mongo:5.0.5
+    image: mongo:5.0.9
     ports:
       - 27017:27017
     volumes:
-      - /f/hippocampus:/data/db
-  externalhippocampus:
-    image: externalhippocampus
+      - /mnt/sdb2/exhippocampus:/data/db
+  exhippocampus:
+    image: exhippocampus
     build:
       context: .
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
     ports:
-      - 3000:8080
+      - 30000:30000

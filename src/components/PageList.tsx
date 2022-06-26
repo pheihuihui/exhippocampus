@@ -3,15 +3,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { useFetch } from '../hooks/_hooks'
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    ListItemButton
-} from "@mui/material";
+import { Dialog, DialogContent, ListItemButton } from "@mui/material";
 import { PageWindow } from './PageWindow'
+import { server } from '../appconfig.json'
 
 export const PageList: FC = () => {
 
@@ -20,7 +14,7 @@ export const PageList: FC = () => {
         title: string
     }>
 
-    const { data, error } = useFetch<T_PageTitles>('/query/page/ids')
+    const { data, error } = useFetch<T_PageTitles>(`${server.url}/query/page/ids`)
 
     const [open, setOpen] = useState(false)
     const [itemId, setItemId] = useState('')
