@@ -1,6 +1,8 @@
 import { ratings } from './douban_movie_ratings'
 import { MongoClient } from 'mongodb'
-import { CONF_SERVER } from '../utilities/configurations';
+import { mongodb } from '../appconfig.json'
+import { createReadStream } from 'fs'
+import { createInterface } from 'readline'
 
 function sleep(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -9,7 +11,7 @@ function sleep(time: number) {
 const urlPrefix = 'http://127.0.0.1:5000/movies/'
 
 async function _fetch() {
-    let client = await MongoClient.connect(CONF_SERVER.CONNSTR_NODE)
+    let client = await MongoClient.connect(mongodb.url)
     let coll_douban_movies = client.db('ExhippocampusDB').collection('douban_movies')
 
     for (const key in ratings) {
@@ -27,8 +29,27 @@ async function _fetch() {
 
 }
 
+async function __() {
+    // let client = await MongoClient.connect(mongodb.url)
+    // let coll_douban_movies = client.db('AA').collection('BB')
+
+    let stream = createReadStream('D:\\CCC.json')
+    let rl = createInterface({
+        input: stream,
+        crlfDelay: Infinity
+    })
+
+    let u = 0
+    rl.on('line', line => {
+        u += 1
+    })
+    console.log(u)
+
+    
+}
+
 async function query_details(field: string) {
-    let client = await MongoClient.connect(CONF_SERVER.CONNSTR_NODE)
+    let client = await MongoClient.connect(mongodb.url)
     let coll_douban_movies = client.db('ExhippocampusDB').collection('douban_movies')
 
     let cur = await coll_douban_movies.find()
@@ -69,7 +90,7 @@ async function query_details(field: string) {
 }
 
 async function query404() {
-    let client = await MongoClient.connect(CONF_SERVER.CONNSTR_NODE)
+    let client = await MongoClient.connect(mongodb.url)
     let coll_douban_movies = client.db('ExhippocampusDB').collection('douban_movies')
 
     let cur = await coll_douban_movies.find()
@@ -82,6 +103,8 @@ async function query404() {
 // query_details('year')
 // query404()
 
-fetch('https://nodejs.org/en/blog/announcements/v18-release-announce/')
-    .then(x => x.text())
-    .then(console.log)
+// fetch('https://nodejs.org/en/blog/announcements/v18-release-announce/')
+//     .then(x => x.text())
+//     .then(console.log)
+
+__()

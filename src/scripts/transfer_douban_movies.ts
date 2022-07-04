@@ -1,10 +1,10 @@
 import { MongoClient } from "mongodb"
-import { CONF_SERVER } from "../utilities/configurations"
+import { mongodb } from "../appconfig.json"
 import { T_Item } from '../meta/item'
 import { T_DoubanMovie } from "../meta/sites/douban_movie"
 
 async function getAllMovies() {
-    let client = await MongoClient.connect(CONF_SERVER.CONNSTR_NODE)
+    let client = await MongoClient.connect(mongodb.url)
     let coll_douban_movies = client.db('ExhippocampusDB').collection('douban_movies')
     let coll_douban_movie_items = client.db('ExhippocampusDB').collection('ExhippocampusColl_DoubanMovies')
     let curs = coll_douban_movies.find()
