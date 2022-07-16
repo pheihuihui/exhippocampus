@@ -1,0 +1,52 @@
+// .input,
+// .result {
+//     position: fixed;
+//     height: 500px;
+//     top: calc(3 * (1em + 1ex));
+//     bottom: 0;
+//     overflow: auto;
+// }
+
+// .input {
+//     left: 0;
+//     width: 50%;
+// }
+
+// .result {
+//     right: 0;
+//     left: 50%;
+//     background-color: var(--gray-0);
+//     padding: calc(1em + 1ex);
+// }
+
+// .input textarea {
+//     display: block;
+//     width: 50%;
+//     border: 0;
+//     resize: none;
+//     padding: calc(1em + 1ex);
+//     background-color: var(--gray-10);
+//     color: var(--gray-0);
+// }
+
+
+.editor {
+    display: flex;
+    height: 800px;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-direction: row;
+    align-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.input textarea {
+    width: 500px;
+    height: 700px;
+}
+
+.result {
+    width: 500px;
+    height: 700px;
+}
+
