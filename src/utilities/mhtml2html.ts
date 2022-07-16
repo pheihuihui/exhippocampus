@@ -1,6 +1,5 @@
-import * as QuotedPrintable from 'quoted-printable'
 import { JSDOM } from 'jsdom'
-import * as __mhtml2html from './_mhtml2html'
+import { decode_quoted_printable } from './data_analysis'
 
 type T_Asset = {
     encoding: string,
@@ -83,7 +82,7 @@ function replaceReferences(media: T_Media, base: string, asset: string) {
 function convertAssetToDataURI(asset: T_Asset) {
     switch (asset.encoding) {
         case 'quoted-printable':
-            return `data:${asset.type};utf8,${escape(QuotedPrintable.decode(asset.data))}`;
+            return `data:${asset.type};utf8,${escape(decode_quoted_printable(asset.data))}`;
         case 'base64':
             return `data:${asset.type};base64,${asset.data}`;
         default:
@@ -91,7 +90,7 @@ function convertAssetToDataURI(asset: T_Asset) {
     }
 }
 
-const _mhtml2html = {
+export const mhtml2html = {
 
     parse: (mhtml: string, htmlOnly = false) => {
 
@@ -152,7 +151,7 @@ const _mhtml2html = {
 
             // Return the (decoded) line.
             if (encoding == 'quoted-printable') {
-                return QuotedPrintable.decode(line);
+                return decode_quoted_printable(line);
             }
             if (encoding == 'base64') {
                 return line.trim();
@@ -173,15 +172,14 @@ const _mhtml2html = {
         }
 
         while (state != MHTML_FSM.MHTML_END) {
-            console.log(state)
             switch (state) {
                 // Fetch document headers including the boundary to use.
                 case MHTML_FSM.MHTML_HEADERS: {
                     next = getLine();
-                    console.log(next)
                     // Use a new line or null character to determine when we should
                     // stop processing headers.
-                    if (next != '\n') {
+                    // @ts-ignore
+                    if (next != 0 && next != '\n') {
                         splitHeaders(next, headers);
                     } else {
                         assert(typeof headers['Content-Type'] !== 'undefined', `Missing document content type; Line ${l}`);
@@ -208,7 +206,8 @@ const _mhtml2html = {
 
                     // Use a new line or null character to determine when we should
                     // stop processing headers.
-                    if (next != '\n') {
+                    // @ts-ignore
+                    if (next != 0 && next != '\n') {
                         splitHeaders(next, content);
                     } else {
                         encoding = content['Content-Transfer-Encoding'];
@@ -393,23 +392,6 @@ const _mhtml2html = {
                         break;
 
                     case 'IFRAME':
-                        if (convertIframes == true && src) {
-                            const id = `<${src.split('cid:')[1]}>`;
-                            const frame = frames[id];
-
-                            if (frame && frame.type === 'text/html') {
-                                let __mhtml: T_MHTML = {
-                                    media: Object.assign({}, media, { [id]: frame }),
-                                    frames: frames,
-                                    index: id
-                                }
-                                const iframe = mhtml2html.convert(__mhtml, convertIframes);
-                                if (!iframe) {
-                                    break
-                                }
-                                child.src = `data:text/html;charset=utf-8,${encodeURIComponent(iframe.window.document.documentElement.outerHTML)}`
-                            }
-                        }
                         break;
 
                     default:
@@ -425,5 +407,3 @@ const _mhtml2html = {
     }
 
 }
-
-export const mhtml2html: typeof _mhtml2html = __mhtml2html

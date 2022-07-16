@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { MarkdownEditor } from './MarkdownEditor'
+import { PageWindow } from './PageWindow'
 
 export const App: FC = () => {
-    return <MarkdownEditor value={demo} />
+  return <PageWindow itemId="62d2f2f189d83fc41b445511" />
 }
 
 export const _app = <App />

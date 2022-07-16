@@ -23,3 +23,24 @@ export const _countDups = (arr: string[], brr: string[]) => {
     }
     return res
 }
+
+export const decode_quoted_printable = (input: string) => {
+    return input
+        // https://tools.ietf.org/html/rfc2045#section-6.7, rule 3:
+        // “Therefore, when decoding a `Quoted-Printable` body, any trailing white
+        // space on a line must be deleted, as it will necessarily have been added
+        // by intermediate transport agents.”
+        .replace(/[\t\x20]$/gm, '')
+        // Remove hard line breaks preceded by `=`. Proper `Quoted-Printable`-
+        // encoded data only contains CRLF line  endings, but for compatibility
+        // reasons we support separate CR and LF too.
+        .replace(/=(?:\r\n?|\n|$)/g, '')
+        // Decode escape sequences of the form `=XX` where `XX` is any
+        // combination of two hexidecimal digits. For optimal compatibility,
+        // lowercase hexadecimal digits are supported as well. See
+        // https://tools.ietf.org/html/rfc2045#section-6.7, note 1.
+        .replace(/=([a-fA-F0-9]{2})/g, (_, _1) => {
+            let codePoint = parseInt(_1, 16)
+            return String.fromCharCode(codePoint)
+        })
+}
