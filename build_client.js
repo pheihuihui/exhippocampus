@@ -1,6 +1,6 @@
 const es = require('esbuild')
 const fs = require('fs')
-const sass = require('node-sass')
+const sass = require('sass')
 
 const dir_client = './dist/client'
 
@@ -25,7 +25,7 @@ es.buildSync({
 const src_scss = './src/styles/_client.scss'
 const dist_css = './dist/client/client.css'
 
-let res = sass.renderSync({ file: src_scss })
+let res = sass.compile(src_scss)
 let css_content = res.css.toString()
 
 fs.writeFileSync(dist_css, css_content, 'utf-8')
